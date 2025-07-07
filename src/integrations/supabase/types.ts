@@ -2266,7 +2266,7 @@ export type Database = {
           email_verified_at: string | null
           experience_level: string | null
           first_name: string | null
-          full_name: string
+          full_name: string | null
           id: string
           interests: string[] | null
           is_active: boolean | null
@@ -2298,7 +2298,7 @@ export type Database = {
           email_verified_at?: string | null
           experience_level?: string | null
           first_name?: string | null
-          full_name: string
+          full_name?: string | null
           id: string
           interests?: string[] | null
           is_active?: boolean | null
@@ -2332,7 +2332,7 @@ export type Database = {
           email_verified_at?: string | null
           experience_level?: string | null
           first_name?: string | null
-          full_name?: string
+          full_name?: string | null
           id?: string
           interests?: string[] | null
           is_active?: boolean | null
