@@ -1,11 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Sparkles, Zap, Brain, Target } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 import heroBackground from '@/assets/hero-background.jpg';
 
 export function HeroSection() {
+  const { user } = useAuth();
+  
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
@@ -67,18 +71,24 @@ export function HeroSection() {
             <Button 
               size="lg" 
               className="bg-gradient-primary hover:opacity-90 shadow-glow px-8 py-4 text-lg"
+              asChild
             >
-              <Target className="w-5 h-5 mr-2" />
-              Get Started
-              <ArrowRight className="w-5 h-5 ml-2" />
+              <Link to={user ? "/dashboard" : "/auth"}>
+                <Target className="w-5 h-5 mr-2" />
+                {user ? "Go to Dashboard" : "Get Started"}
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Link>
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="animated-border px-8 py-4 text-lg"
+              asChild
             >
-              <Brain className="w-5 h-5 mr-2" />
-              Learn More
+              <Link to="/solutions">
+                <Brain className="w-5 h-5 mr-2" />
+                Learn More
+              </Link>
             </Button>
           </motion.div>
 

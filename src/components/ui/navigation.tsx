@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Menu, X, User, Users, Sparkles, ChevronDown } from 'lucide-react';
+import { Menu, X, User, Users, Sparkles, ChevronDown, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface NavigationProps {
   className?: string;
@@ -14,13 +23,12 @@ const navigationItems = [
     label: 'Hanu Clients',
     icon: Users,
     sections: [
-      'Overview',
-      'Submit Challenge',
-      'Solutions & Cases',
-      'Meet Experts',
-      'Project Tracker',
-      'Knowledge Base',
-      'Contact'
+      { label: 'Overview', href: '/clients' },
+      { label: 'Submit Challenge', href: '/clients' },
+      { label: 'Solutions & Cases', href: '/solutions' },
+      { label: 'Meet Experts', href: '/experts' },
+      { label: 'Project Tracker', href: '/projects' },
+      { label: 'Dashboard', href: '/dashboard' }
     ]
   },
   {
@@ -28,13 +36,9 @@ const navigationItems = [
     label: 'Hanu Talent',
     icon: User,
     sections: [
-      'Join as Consultant',
-      'Onboarding',
-      'Internship Programs',
-      'Profile Builder',
-      'Collaboration Tools',
-      'Opportunities',
-      'Resources'
+      { label: 'Join as Consultant', href: '/talent' },
+      { label: 'Expert Directory', href: '/experts' },
+      { label: 'Dashboard', href: '/dashboard' }
     ]
   }
 ];
@@ -44,6 +48,14 @@ export function Navigation({ className }: NavigationProps) {
   const [activeTab, setActiveTab] = useState('clients');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
+  
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,20 +82,22 @@ export function Navigation({ className }: NavigationProps) {
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-3"
-          >
-            <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center glow">
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-space-grotesk font-bold text-gradient-primary">
-                Hanu Consulting
-              </h1>
-              <p className="text-xs text-muted-foreground">AI-Powered Solutions</p>
-            </div>
-          </motion.div>
+          <Link to="/">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center space-x-3"
+            >
+              <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center glow">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-space-grotesk font-bold text-gradient-primary">
+                  Hanu Consulting
+                </h1>
+                <p className="text-xs text-muted-foreground">AI-Powered Solutions</p>
+              </div>
+            </motion.div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
@@ -120,16 +134,19 @@ export function Navigation({ className }: NavigationProps) {
                       className="absolute top-full left-0 mt-2 w-64 glass-strong rounded-xl border border-primary/20 shadow-lg overflow-hidden"
                     >
                       {item.sections.map((section, index) => (
-                        <motion.a
-                          key={section}
-                          href={`#${section.toLowerCase().replace(/\s+/g, '-')}`}
+                        <motion.div
+                          key={section.label}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: index * 0.05 }}
-                          className="block px-4 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors border-b border-border/10 last:border-b-0"
                         >
-                          {section}
-                        </motion.a>
+                          <Link
+                            to={section.href}
+                            className="block px-4 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors border-b border-border/10 last:border-b-0"
+                          >
+                            {section.label}
+                          </Link>
+                        </motion.div>
                       ))}
                     </motion.div>
                   )}
@@ -140,12 +157,39 @@ export function Navigation({ className }: NavigationProps) {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" className="animated-border">
-              Sign In
-            </Button>
-            <Button className="bg-gradient-primary hover:opacity-90 shadow-glow">
-              Get Started
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <div className="flex flex-col space-y-1 p-2">
+                    <p className="text-sm font-medium leading-none">{user.user_metadata?.full_name || user.email}</p>
+                    <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button variant="outline" className="animated-border" asChild>
+                  <Link to="/auth">Sign In</Link>
+                </Button>
+                <Button className="bg-gradient-primary hover:opacity-90 shadow-glow" asChild>
+                  <Link to="/auth">Get Started</Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -209,25 +253,43 @@ export function Navigation({ className }: NavigationProps) {
                         className="pl-6 space-y-1"
                       >
                         {item.sections.map((section) => (
-                          <a
-                            key={section}
-                            href={`#${section.toLowerCase().replace(/\s+/g, '-')}`}
+                          <Link
+                            key={section.label}
+                            to={section.href}
                             className="block py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
                           >
-                            {section}
-                          </a>
+                            {section.label}
+                          </Link>
                         ))}
                       </motion.div>
                     )}
                   </div>
                 ))}
                 <div className="pt-4 border-t border-border space-y-2">
-                  <Button variant="outline" className="w-full">
-                    Sign In
-                  </Button>
-                  <Button className="w-full bg-gradient-primary">
-                    Get Started
-                  </Button>
+                  {user ? (
+                    <div className="space-y-3">
+                      <div className="text-sm">
+                        <p className="font-medium">{user.user_metadata?.full_name || user.email}</p>
+                        <p className="text-muted-foreground">{user.email}</p>
+                      </div>
+                      <Button variant="outline" onClick={() => navigate('/dashboard')} className="w-full">
+                        Dashboard
+                      </Button>
+                      <Button variant="outline" onClick={handleSignOut} className="w-full">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign Out
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link to="/auth">Sign In</Link>
+                      </Button>
+                      <Button className="w-full bg-gradient-primary" asChild>
+                        <Link to="/auth">Get Started</Link>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>
