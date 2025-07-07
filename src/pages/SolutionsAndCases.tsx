@@ -59,7 +59,7 @@ export default function SolutionsAndCases() {
       );
     }
 
-    if (categoryFilter) {
+    if (categoryFilter && categoryFilter !== 'all') {
       filtered = filtered.filter(article => article.category === categoryFilter);
     }
 
@@ -116,7 +116,7 @@ export default function SolutionsAndCases() {
               <SelectValue placeholder="Filter by Category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Categories</SelectItem>
+              <SelectItem value="all">All Categories</SelectItem>
               {getUniqueCategories().map(category => (
                 <SelectItem key={category} value={category}>{category}</SelectItem>
               ))}
@@ -127,7 +127,7 @@ export default function SolutionsAndCases() {
             variant="outline" 
             onClick={() => {
               setSearchTerm('');
-              setCategoryFilter('');
+              setCategoryFilter('all');
             }}
           >
             Clear Filters
@@ -215,7 +215,7 @@ export default function SolutionsAndCases() {
               className="mt-4"
               onClick={() => {
                 setSearchTerm('');
-                setCategoryFilter('');
+                setCategoryFilter('all');
               }}
             >
               Clear Filters
