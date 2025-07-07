@@ -8,6 +8,9 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import ClientsHub from "./pages/ClientsHub";
 import TalentHub from "./pages/TalentHub";
+import ExpertsDirectory from "./pages/ExpertsDirectory";
+import SolutionsAndCases from "./pages/SolutionsAndCases";
+import ProjectTracker from "./pages/ProjectTracker";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +26,9 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/clients" element={<ClientsHub />} />
           <Route path="/talent" element={<TalentHub />} />
+          <Route path="/experts" element={<ExpertsDirectory />} />
+          <Route path="/solutions" element={<SolutionsAndCases />} />
+          <Route path="/projects" element={<ProjectTracker />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -209,6 +209,39 @@ export type Database = {
           },
         ]
       }
+      articles: {
+        Row: {
+          author: string | null
+          category: string
+          content: string
+          created_at: string
+          id: string
+          published_at: string | null
+          read_time_minutes: number | null
+          title: string
+        }
+        Insert: {
+          author?: string | null
+          category: string
+          content: string
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          read_time_minutes?: number | null
+          title: string
+        }
+        Update: {
+          author?: string | null
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          read_time_minutes?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
       assessment_attempts: {
         Row: {
           answers: Json
@@ -439,6 +472,63 @@ export type Database = {
           user_id?: string
           valid_until?: string | null
           verification_code?: string | null
+        }
+        Relationships: []
+      }
+      client_challenges: {
+        Row: {
+          assigned_expert_id: string | null
+          budget_range: string | null
+          challenge_title: string
+          company_name: string
+          contact_email: string
+          contact_phone: string | null
+          created_at: string
+          description: string
+          id: string
+          industry: string
+          status: string
+          supporting_documents_urls: string[] | null
+          timeline: string | null
+          updated_at: string
+          urgency: string | null
+          user_id: string | null
+        }
+        Insert: {
+          assigned_expert_id?: string | null
+          budget_range?: string | null
+          challenge_title: string
+          company_name: string
+          contact_email: string
+          contact_phone?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          industry: string
+          status?: string
+          supporting_documents_urls?: string[] | null
+          timeline?: string | null
+          updated_at?: string
+          urgency?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          assigned_expert_id?: string | null
+          budget_range?: string | null
+          challenge_title?: string
+          company_name?: string
+          contact_email?: string
+          contact_phone?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          industry?: string
+          status?: string
+          supporting_documents_urls?: string[] | null
+          timeline?: string | null
+          updated_at?: string
+          urgency?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -1097,6 +1187,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      experts: {
+        Row: {
+          availability_status: string | null
+          bio: string | null
+          created_at: string
+          experience_years: number | null
+          hourly_rate: number | null
+          id: string
+          industries: string[]
+          name: string
+          profile_image_url: string | null
+          specialties: string[]
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          availability_status?: string | null
+          bio?: string | null
+          created_at?: string
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id?: string
+          industries: string[]
+          name: string
+          profile_image_url?: string | null
+          specialties: string[]
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          availability_status?: string | null
+          bio?: string | null
+          created_at?: string
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id?: string
+          industries?: string[]
+          name?: string
+          profile_image_url?: string | null
+          specialties?: string[]
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       job_alerts: {
         Row: {

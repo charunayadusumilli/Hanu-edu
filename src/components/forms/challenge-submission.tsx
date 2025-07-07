@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Upload, CheckCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ChallengeFormData {
   companyName: string;
@@ -54,15 +55,41 @@ export function ChallengeSubmissionForm() {
 
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const { data, error } = await supabase
+        .from('client_challenges')
+        .insert([
+          {
+            company_name: formData.companyName,
+            industry: formData.industry,
+            challenge_title: formData.challengeTitle,
+            description: formData.description,
+            budget_range: formData.budgetRange,
+            timeline: formData.timeline,
+            urgency: formData.urgency,
+            contact_email: formData.contactEmail,
+            contact_phone: formData.contactPhone,
+            status: 'submitted'
+          }
+        ]);
+
+      if (error) throw error;
+
       setIsSubmitted(true);
       toast({
         title: "Challenge Submitted Successfully!",
         description: "We'll review your challenge and connect you with the right expert within 24 hours.",
       });
-    }, 2000);
+    } catch (error) {
+      console.error('Error submitting challenge:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your challenge. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: keyof ChallengeFormData, value: string | boolean) => {
