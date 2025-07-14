@@ -9,6 +9,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Upload, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { SecurityLogger } from '@/utils/security-logger';
+import { useSessionTimeout } from '@/hooks/useSessionTimeout';
 
 interface ChallengeFormData {
   companyName: string;
@@ -40,9 +43,60 @@ export function ChallengeSubmissionForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
+  const { user, loading } = useAuth();
+  
+  useSessionTimeout();
+
+  const validateForm = () => {
+    const errors: string[] = [];
+    
+    if (!formData.companyName || formData.companyName.trim().length < 2) {
+      errors.push("Company name must be at least 2 characters");
+    }
+    
+    if (!formData.challengeTitle || formData.challengeTitle.trim().length < 5) {
+      errors.push("Challenge title must be at least 5 characters");
+    }
+    
+    if (!formData.description || formData.description.trim().length < 20) {
+      errors.push("Description must be at least 20 characters");
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.contactEmail || !emailRegex.test(formData.contactEmail)) {
+      errors.push("Please enter a valid email address");
+    }
+    
+    if (formData.contactPhone && formData.contactPhone.length > 0 && formData.contactPhone.length < 10) {
+      errors.push("Phone number must be at least 10 digits");
+    }
+    
+    return errors;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Authentication check
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to submit a challenge.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Form validation
+    const validationErrors = validateForm();
+    if (validationErrors.length > 0) {
+      toast({
+        title: "Validation Error",
+        description: validationErrors[0],
+        variant: "destructive",
+      });
+      return;
+    }
     
     if (!formData.agreeToTerms) {
       toast({
@@ -60,15 +114,16 @@ export function ChallengeSubmissionForm() {
         .from('client_challenges')
         .insert([
           {
-            company_name: formData.companyName,
+            user_id: user.id,
+            company_name: formData.companyName.trim(),
             industry: formData.industry,
-            challenge_title: formData.challengeTitle,
-            description: formData.description,
+            challenge_title: formData.challengeTitle.trim(),
+            description: formData.description.trim(),
             budget_range: formData.budgetRange,
             timeline: formData.timeline,
             urgency: formData.urgency,
-            contact_email: formData.contactEmail,
-            contact_phone: formData.contactPhone,
+            contact_email: formData.contactEmail.trim().toLowerCase(),
+            contact_phone: formData.contactPhone?.trim() || null,
             status: 'submitted'
           }
         ]);
@@ -80,11 +135,19 @@ export function ChallengeSubmissionForm() {
         title: "Challenge Submitted Successfully!",
         description: "We'll review your challenge and connect you with the right expert within 24 hours.",
       });
+      
+      // Log successful submission
+      await SecurityLogger.logFormSubmission('challenge_submission', true);
     } catch (error) {
       console.error('Error submitting challenge:', error);
+      
+      // Log failed submission
+      await SecurityLogger.logFormSubmission('challenge_submission', false, 
+        error instanceof Error ? error.message : 'Unknown error');
+      
       toast({
         title: "Submission Failed",
-        description: "There was an error submitting your challenge. Please try again.",
+        description: "Unable to submit your challenge. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -93,8 +156,44 @@ export function ChallengeSubmissionForm() {
   };
 
   const handleInputChange = (field: keyof ChallengeFormData, value: string | boolean) => {
+    // Sanitize string inputs
+    if (typeof value === 'string') {
+      value = value.slice(0, field === 'description' ? 2000 : 255); // Limit input length
+    }
     setFormData(prev => ({ ...prev, [field]: value }));
   };
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <Card className="glass max-w-2xl mx-auto">
+        <CardContent className="text-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading...</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Redirect to login if not authenticated
+  if (!user) {
+    return (
+      <Card className="glass max-w-2xl mx-auto">
+        <CardContent className="text-center py-12">
+          <h2 className="text-2xl font-bold mb-4">Authentication Required</h2>
+          <p className="text-muted-foreground mb-6">
+            Please sign in to submit a challenge.
+          </p>
+          <Button 
+            onClick={() => window.location.href = '/auth'}
+            className="bg-gradient-primary"
+          >
+            Sign In
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (isSubmitted) {
     return (
@@ -154,6 +253,7 @@ export function ChallengeSubmissionForm() {
                 value={formData.companyName}
                 onChange={(e) => handleInputChange('companyName', e.target.value)}
                 placeholder="Your company name"
+                maxLength={255}
                 required
               />
             </div>
@@ -184,6 +284,7 @@ export function ChallengeSubmissionForm() {
               value={formData.challengeTitle}
               onChange={(e) => handleInputChange('challengeTitle', e.target.value)}
               placeholder="Brief, descriptive title of your challenge"
+              maxLength={255}
               required
             />
           </div>
@@ -196,6 +297,7 @@ export function ChallengeSubmissionForm() {
               onChange={(e) => handleInputChange('description', e.target.value)}
               placeholder="Describe your challenge in detail. Include current situation, desired outcomes, constraints, and any relevant context..."
               className="min-h-[150px]"
+              maxLength={2000}
               required
             />
           </div>
@@ -259,6 +361,7 @@ export function ChallengeSubmissionForm() {
                 value={formData.contactEmail}
                 onChange={(e) => handleInputChange('contactEmail', e.target.value)}
                 placeholder="your.email@company.com"
+                maxLength={255}
                 required
               />
             </div>
@@ -270,6 +373,7 @@ export function ChallengeSubmissionForm() {
                 value={formData.contactPhone}
                 onChange={(e) => handleInputChange('contactPhone', e.target.value)}
                 placeholder="+1 (555) 123-4567"
+                maxLength={20}
               />
             </div>
           </div>

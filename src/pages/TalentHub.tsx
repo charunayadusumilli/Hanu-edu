@@ -9,6 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { User, Briefcase, GraduationCap, Settings, Search, Star, MapPin, Loader2, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { SecurityLogger } from '@/utils/security-logger';
+import { useSessionTimeout } from '@/hooks/useSessionTimeout';
 
 interface ExpertApplicationData {
   name: string;
@@ -26,6 +29,9 @@ export default function TalentHub() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
+  const { user, loading } = useAuth();
+  
+  useSessionTimeout();
   
   const [formData, setFormData] = useState<ExpertApplicationData>({
     name: '',
@@ -42,14 +48,78 @@ export default function TalentHub() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const validateExpertForm = () => {
+    const errors: string[] = [];
+    
+    if (!formData.name || formData.name.trim().length < 2) {
+      errors.push("Name must be at least 2 characters");
+    }
+    
+    if (!formData.title || formData.title.trim().length < 5) {
+      errors.push("Professional title must be at least 5 characters");
+    }
+    
+    if (!formData.specialties || formData.specialties.length === 0) {
+      errors.push("At least one specialty is required");
+    }
+    
+    if (!formData.industries || formData.industries.length === 0) {
+      errors.push("At least one industry is required");
+    }
+    
+    if (!formData.experience_years || formData.experience_years < 1) {
+      errors.push("Experience must be at least 1 year");
+    }
+    
+    if (!formData.hourly_rate || formData.hourly_rate < 1) {
+      errors.push("Hourly rate must be greater than 0");
+    }
+    
+    if (!formData.bio || formData.bio.trim().length < 50) {
+      errors.push("Bio must be at least 50 characters");
+    }
+    
+    return errors;
+  };
+
   const handleSubmitApplication = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Authentication check
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to submit an application.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Form validation
+    const validationErrors = validateExpertForm();
+    if (validationErrors.length > 0) {
+      toast({
+        title: "Validation Error",
+        description: validationErrors[0],
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
       const { error } = await supabase
         .from('experts')
-        .insert([formData]);
+        .insert([{
+          ...formData,
+          user_id: user.id,
+          name: formData.name.trim(),
+          title: formData.title.trim(),
+          bio: formData.bio.trim(),
+          specialties: formData.specialties.filter(s => s.trim().length > 0),
+          industries: formData.industries.filter(i => i.trim().length > 0)
+        }]);
 
       if (error) throw error;
 
@@ -58,11 +128,19 @@ export default function TalentHub() {
         title: "Application Submitted!",
         description: "We'll review your application and get back to you within 48 hours.",
       });
+      
+      // Log successful submission
+      await SecurityLogger.logFormSubmission('expert_application', true);
     } catch (error) {
       console.error('Error submitting application:', error);
+      
+      // Log failed submission
+      await SecurityLogger.logFormSubmission('expert_application', false, 
+        error instanceof Error ? error.message : 'Unknown error');
+      
       toast({
         title: "Submission Failed",
-        description: "There was an error submitting your application. Please try again.",
+        description: "Unable to submit your application. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -71,6 +149,16 @@ export default function TalentHub() {
   };
 
   const handleQuickAction = (action: string) => {
+    // Check authentication for all actions
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to access this feature.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     switch (action) {
       case 'apply':
         setShowApplicationForm(true);
@@ -95,6 +183,20 @@ export default function TalentHub() {
         break;
     }
   };
+
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background pt-20 flex items-center justify-center">
+        <Card className="glass max-w-2xl mx-auto">
+          <CardContent className="text-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
+            <p className="text-muted-foreground">Loading...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (isSubmitted) {
     return (
@@ -166,6 +268,7 @@ export default function TalentHub() {
                       placeholder="Your full name" 
                       value={formData.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
+                      maxLength={255}
                       required
                     />
                   </div>
@@ -175,6 +278,7 @@ export default function TalentHub() {
                       placeholder="e.g., Digital Transformation Consultant" 
                       value={formData.title}
                       onChange={(e) => handleInputChange('title', e.target.value)}
+                      maxLength={255}
                       required
                     />
                   </div>
@@ -229,6 +333,7 @@ export default function TalentHub() {
                     className="min-h-[120px]"
                     value={formData.bio}
                     onChange={(e) => handleInputChange('bio', e.target.value)}
+                    maxLength={2000}
                     required
                   />
                 </div>

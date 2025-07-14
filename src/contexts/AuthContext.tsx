@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { SecurityLogger } from '@/utils/security-logger';
 
 interface AuthContextType {
   user: User | null;
@@ -43,6 +44,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email,
       password,
     });
+    
+    // Log authentication attempt
+    await SecurityLogger.logAuthAttempt(!error, email, error?.message);
+    
     return { error };
   };
 
@@ -61,6 +66,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       }
     });
+    
+    // Log registration attempt
+    await SecurityLogger.logAuthAttempt(!error, email, error?.message);
+    
     return { error };
   };
 
