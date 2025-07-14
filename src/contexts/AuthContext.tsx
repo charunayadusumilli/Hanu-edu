@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { SecurityLogger } from '@/utils/security-logger';
+import { getAuthRedirectUrl, validateDomainConfig } from '@/utils/domain-config';
 
 interface AuthContextType {
   user: User | null;
@@ -20,12 +21,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Validate domain configuration on startup
+    if (!validateDomainConfig()) {
+      console.error('Domain configuration validation failed');
+    }
+    
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        
+        // Log successful auth events
+        if (event === 'SIGNED_IN' && session?.user) {
+          SecurityLogger.logAuthAttempt(true, session.user.email || 'unknown', 'Successful sign in');
+        }
       }
     );
 
@@ -52,7 +63,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    const redirectUrl = `${window.location.origin}/`;
+    // Validate domain configuration
+    if (!validateDomainConfig()) {
+      const error = new Error('Invalid domain configuration');
+      await SecurityLogger.logAuthAttempt(false, email, 'Invalid domain configuration');
+      return { error };
+    }
+    
+    // Get proper redirect URL for the current domain
+    const redirectUrl = getAuthRedirectUrl('/');
     
     const { error } = await supabase.auth.signUp({
       email,

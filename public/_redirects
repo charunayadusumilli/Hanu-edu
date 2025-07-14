@@ -1,7 +1,8 @@
-# Netlify redirects for React Router
+# Vercel-compatible redirects for React Router
 /*    /index.html   200
 
 # Handle client-side routing
 /dashboard/*  /index.html  200
 /clients/*    /index.html  200
 /talent/*     /index.html  200
+/auth/*       /index.html  200
