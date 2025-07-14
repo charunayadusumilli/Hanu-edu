@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { SecurityLogger } from '@/utils/security-logger';
-import { getAuthRedirectUrl, validateDomainConfig } from '@/utils/domain-config';
+import { getAuthRedirectUrl, validateDomainConfig, getSiteUrl, isDomainSecure } from '@/utils/domain-config';
 
 interface AuthContextType {
   user: User | null;
@@ -63,33 +63,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    // Validate domain configuration
-    if (!validateDomainConfig()) {
-      const error = new Error('Invalid domain configuration');
-      await SecurityLogger.logAuthAttempt(false, email, 'Invalid domain configuration');
+    try {
+      // Validate domain configuration
+      if (!validateDomainConfig()) {
+        const error = new Error('Invalid domain configuration');
+        await SecurityLogger.logAuthAttempt(false, email, 'Invalid domain configuration');
+        return { error };
+      }
+      
+      // Ensure secure connection for custom domain
+      if (!isDomainSecure()) {
+        const error = new Error('Secure connection required for authentication');
+        await SecurityLogger.logAuthAttempt(false, email, 'Insecure connection');
+        return { error };
+      }
+      
+      // Get proper site URL for hanu-consulting.com
+      const siteUrl = getSiteUrl();
+      const redirectUrl = `${siteUrl}/auth/callback`;
+      
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: fullName,
+            first_name: fullName.split(' ')[0],
+            last_name: fullName.split(' ').slice(1).join(' '),
+          }
+        }
+      });
+      
+      // Log registration attempt
+      await SecurityLogger.logAuthAttempt(!error, email, error?.message);
+      
+      return { error };
+    } catch (error: any) {
+      await SecurityLogger.logAuthAttempt(false, email, error.message);
       return { error };
     }
-    
-    // Get proper redirect URL for the current domain
-    const redirectUrl = getAuthRedirectUrl('/');
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: {
-          full_name: fullName,
-          first_name: fullName.split(' ')[0],
-          last_name: fullName.split(' ').slice(1).join(' '),
-        }
-      }
-    });
-    
-    // Log registration attempt
-    await SecurityLogger.logAuthAttempt(!error, email, error?.message);
-    
-    return { error };
   };
 
   const signOut = async () => {

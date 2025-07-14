@@ -3260,6 +3260,10 @@ export type Database = {
         Args: { assessment_id: number; user_id: string }
         Returns: boolean
       }
+      validate_domain_access: {
+        Args: { domain_url: string }
+        Returns: boolean
+      }
     }
     Enums: {
       admin_role: "super_admin" | "admin" | "moderator" | "employee"

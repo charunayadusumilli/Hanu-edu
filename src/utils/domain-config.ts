@@ -1,4 +1,4 @@
-// Domain configuration utilities for deployment
+// Domain configuration utilities for hanu-consulting.com deployment
 export const getDomainConfig = () => {
   const origin = window.location.origin;
   const hostname = window.location.hostname;
@@ -6,18 +6,23 @@ export const getDomainConfig = () => {
   // Check if we're in production
   const isProduction = process.env.NODE_ENV === 'production';
   
-  // Check if we're on a custom domain (not localhost or .vercel.app)
-  const isCustomDomain = !hostname.includes('localhost') && 
-                        !hostname.includes('vercel.app') && 
-                        !hostname.includes('netlify.app');
+  // Check if we're on the custom domain hanu-consulting.com
+  const isCustomDomain = hostname === 'hanu-consulting.com' || hostname === 'www.hanu-consulting.com';
+  
+  // Force HTTPS for custom domain
+  const secureOrigin = isCustomDomain && !origin.startsWith('https:') 
+    ? origin.replace('http:', 'https:') 
+    : origin;
   
   return {
-    origin,
+    origin: secureOrigin,
     hostname,
     isProduction,
     isCustomDomain,
-    redirectUrl: `${origin}/`,
-    apiUrl: origin
+    redirectUrl: `${secureOrigin}/`,
+    apiUrl: secureOrigin,
+    authRedirectUrl: `${secureOrigin}/auth/callback`,
+    siteUrl: isCustomDomain ? 'https://hanu-consulting.com' : secureOrigin
   };
 };
 
@@ -43,5 +48,17 @@ export const validateDomainConfig = () => {
 // Get auth redirect URL based on environment
 export const getAuthRedirectUrl = (path: string = '/') => {
   const config = getDomainConfig();
-  return `${config.origin}${path}`;
+  return `${config.siteUrl}${path}`;
+};
+
+// Get proper site URL for Supabase auth configuration
+export const getSiteUrl = () => {
+  const config = getDomainConfig();
+  return config.siteUrl;
+};
+
+// Check if domain is secure (HTTPS)
+export const isDomainSecure = () => {
+  const config = getDomainConfig();
+  return config.origin.startsWith('https:') || config.hostname === 'localhost';
 };
