@@ -1,13 +1,274 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { User, Briefcase, GraduationCap, Settings, Search, Star, MapPin } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
+import { User, Briefcase, GraduationCap, Settings, Search, Star, MapPin, Loader2, CheckCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+
+interface ExpertApplicationData {
+  name: string;
+  title: string;
+  specialties: string[];
+  industries: string[];
+  experience_years: number;
+  hourly_rate: number;
+  bio: string;
+  availability_status: string;
+}
 
 export default function TalentHub() {
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { toast } = useToast();
+  
+  const [formData, setFormData] = useState<ExpertApplicationData>({
+    name: '',
+    title: '',
+    specialties: [],
+    industries: [],
+    experience_years: 0,
+    hourly_rate: 0,
+    bio: '',
+    availability_status: 'available'
+  });
+
+  const handleInputChange = (field: keyof ExpertApplicationData, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmitApplication = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('experts')
+        .insert([formData]);
+
+      if (error) throw error;
+
+      setIsSubmitted(true);
+      toast({
+        title: "Application Submitted!",
+        description: "We'll review your application and get back to you within 48 hours.",
+      });
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your application. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleQuickAction = (action: string) => {
+    switch (action) {
+      case 'apply':
+        setShowApplicationForm(true);
+        break;
+      case 'profile':
+        toast({
+          title: "Profile Builder",
+          description: "Profile builder coming soon!",
+        });
+        break;
+      case 'opportunities':
+        toast({
+          title: "Opportunities",
+          description: "Job board coming soon!",
+        });
+        break;
+      case 'learning':
+        toast({
+          title: "Learning Hub",
+          description: "Learning platform coming soon!",
+        });
+        break;
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen bg-background pt-20 flex items-center justify-center">
+        <Card className="glass max-w-2xl mx-auto">
+          <CardContent className="text-center py-12">
+            <CheckCircle className="w-16 h-16 text-accent-green mx-auto mb-6" />
+            <h2 className="text-2xl font-bold mb-4">Application Submitted!</h2>
+            <p className="text-muted-foreground mb-6">
+              Thank you for your interest in joining our expert network. We'll review your application and contact you within 48 hours.
+            </p>
+            <div className="space-y-2 text-sm text-muted-foreground mb-6">
+              <p>✓ Application received and logged</p>
+              <p>✓ Initial review in progress</p>
+              <p>✓ You'll hear from us soon</p>
+            </div>
+            <Button 
+              onClick={() => {
+                setIsSubmitted(false);
+                setShowApplicationForm(false);
+                setFormData({
+                  name: '',
+                  title: '',
+                  specialties: [],
+                  industries: [],
+                  experience_years: 0,
+                  hourly_rate: 0,
+                  bio: '',
+                  availability_status: 'available'
+                });
+              }}
+              variant="outline"
+            >
+              Submit Another Application
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (showApplicationForm) {
+    return (
+      <div className="min-h-screen bg-background pt-20">
+        <div className="container mx-auto px-6 py-8">
+          <div className="mb-6">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowApplicationForm(false)}
+              className="mb-4"
+            >
+              ← Back to Talent Hub
+            </Button>
+          </div>
+          
+          <Card className="glass max-w-4xl mx-auto">
+            <CardHeader>
+              <CardTitle className="text-2xl text-gradient-primary">Join Our Expert Network</CardTitle>
+              <CardDescription>
+                Complete your application to become a certified Hanu consultant
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmitApplication} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Full Name *</label>
+                    <Input 
+                      placeholder="Your full name" 
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Professional Title *</label>
+                    <Input 
+                      placeholder="e.g., Digital Transformation Consultant" 
+                      value={formData.title}
+                      onChange={(e) => handleInputChange('title', e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Specialties *</label>
+                    <Input 
+                      placeholder="e.g., AI Strategy, Digital Transformation (comma-separated)" 
+                      onChange={(e) => handleInputChange('specialties', e.target.value.split(',').map(s => s.trim()))}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Industries *</label>
+                    <Input 
+                      placeholder="e.g., Technology, Healthcare, Finance (comma-separated)" 
+                      onChange={(e) => handleInputChange('industries', e.target.value.split(',').map(s => s.trim()))}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Years of Experience *</label>
+                    <Input 
+                      type="number" 
+                      placeholder="e.g., 10" 
+                      value={formData.experience_years || ''}
+                      onChange={(e) => handleInputChange('experience_years', parseInt(e.target.value) || 0)}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Hourly Rate (USD) *</label>
+                    <Input 
+                      type="number" 
+                      placeholder="e.g., 150" 
+                      value={formData.hourly_rate || ''}
+                      onChange={(e) => handleInputChange('hourly_rate', parseInt(e.target.value) || 0)}
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Professional Bio *</label>
+                  <Textarea 
+                    placeholder="Brief overview of your consulting experience, expertise, and what makes you unique..."
+                    className="min-h-[120px]"
+                    value={formData.bio}
+                    onChange={(e) => handleInputChange('bio', e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Availability Status</label>
+                  <Select value={formData.availability_status} onValueChange={(value) => handleInputChange('availability_status', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select availability" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="available">Available</SelectItem>
+                      <SelectItem value="busy">Currently Busy</SelectItem>
+                      <SelectItem value="unavailable">Not Available</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full bg-gradient-primary hover:opacity-90 shadow-glow"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting Application...
+                    </>
+                  ) : (
+                    'Submit Application'
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background pt-20">
       <div className="container mx-auto px-6 py-8">
@@ -34,7 +295,10 @@ export default function TalentHub() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full bg-gradient-primary">
+              <Button 
+                className="w-full bg-gradient-primary"
+                onClick={() => handleQuickAction('apply')}
+              >
                 Apply Now
               </Button>
             </CardContent>
@@ -51,7 +315,11 @@ export default function TalentHub() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" variant="outline">
+              <Button 
+                className="w-full" 
+                variant="outline"
+                onClick={() => handleQuickAction('profile')}
+              >
                 Build Profile
               </Button>
             </CardContent>
@@ -68,7 +336,11 @@ export default function TalentHub() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" variant="outline">
+              <Button 
+                className="w-full" 
+                variant="outline"
+                onClick={() => handleQuickAction('opportunities')}
+              >
                 View Jobs
               </Button>
             </CardContent>
@@ -85,7 +357,11 @@ export default function TalentHub() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" variant="outline">
+              <Button 
+                className="w-full" 
+                variant="outline"
+                onClick={() => handleQuickAction('learning')}
+              >
                 Learn More
               </Button>
             </CardContent>

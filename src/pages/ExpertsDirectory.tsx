@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Star, Clock, DollarSign, MapPin } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Search, Star, Clock, DollarSign, MapPin, Mail, Phone, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface Expert {
   id: string;
@@ -21,6 +24,13 @@ interface Expert {
   profile_image_url?: string;
 }
 
+interface ContactFormData {
+  name: string;
+  email: string;
+  company: string;
+  message: string;
+}
+
 export default function ExpertsDirectory() {
   const [experts, setExperts] = useState<Expert[]>([]);
   const [filteredExperts, setFilteredExperts] = useState<Expert[]>([]);
@@ -28,6 +38,17 @@ export default function ExpertsDirectory() {
   const [industryFilter, setIndustryFilter] = useState('');
   const [specialtyFilter, setSpecialtyFilter] = useState('');
   const [loading, setLoading] = useState(true);
+  const [selectedExpert, setSelectedExpert] = useState<Expert | null>(null);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  
+  const [contactForm, setContactForm] = useState<ContactFormData>({
+    name: '',
+    email: '',
+    company: '',
+    message: ''
+  });
 
   useEffect(() => {
     fetchExperts();
@@ -89,6 +110,50 @@ export default function ExpertsDirectory() {
   const getUniqueSpecialties = () => {
     const specialties = experts.flatMap(expert => expert.specialties);
     return [...new Set(specialties)];
+  };
+
+  const handleContactExpert = (expert: Expert) => {
+    setSelectedExpert(expert);
+    setShowContactForm(true);
+  };
+
+  const handleSubmitContact = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // In a real application, you would send this to your backend
+      // For now, we'll just show a success message
+      toast({
+        title: "Message Sent!",
+        description: `Your message has been sent to ${selectedExpert?.name}. They will contact you within 24 hours.`,
+      });
+      
+      setShowContactForm(false);
+      setContactForm({
+        name: '',
+        email: '',
+        company: '',
+        message: ''
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to Send Message",
+        description: "There was an error sending your message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleViewProfile = (expert: Expert) => {
+    setSelectedExpert(expert);
+    // In a real application, this would navigate to a detailed profile page
+    toast({
+      title: "Profile View",
+      description: `Viewing ${expert.name}'s detailed profile would open here.`,
+    });
   };
 
   if (loading) {
@@ -231,10 +296,98 @@ export default function ExpertsDirectory() {
 
                 {/* Actions */}
                 <div className="flex gap-2">
-                  <Button className="flex-1 bg-gradient-primary">
-                    Contact Expert
-                  </Button>
-                  <Button variant="outline" className="flex-1">
+                  <Dialog open={showContactForm} onOpenChange={setShowContactForm}>
+                    <DialogTrigger asChild>
+                      <Button 
+                        className="flex-1 bg-gradient-primary"
+                        onClick={() => handleContactExpert(expert)}
+                      >
+                        <Mail className="w-4 h-4 mr-1" />
+                        Contact Expert
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="glass">
+                      <DialogHeader>
+                        <DialogTitle>Contact {selectedExpert?.name}</DialogTitle>
+                        <DialogDescription>
+                          Send a message to connect with this expert about your project needs.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <form onSubmit={handleSubmitContact} className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Your Name *</label>
+                            <Input
+                              placeholder="Full name"
+                              value={contactForm.name}
+                              onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
+                              required
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Email *</label>
+                            <Input
+                              type="email"
+                              placeholder="your.email@company.com"
+                              value={contactForm.email}
+                              onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Company</label>
+                          <Input
+                            placeholder="Your company name"
+                            value={contactForm.company}
+                            onChange={(e) => setContactForm(prev => ({ ...prev, company: e.target.value }))}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Message *</label>
+                          <Textarea
+                            placeholder="Describe your project needs and how this expert can help..."
+                            className="min-h-[100px]"
+                            value={contactForm.message}
+                            onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
+                            required
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            onClick={() => setShowContactForm(false)}
+                            className="flex-1"
+                          >
+                            Cancel
+                          </Button>
+                          <Button 
+                            type="submit" 
+                            className="flex-1 bg-gradient-primary"
+                            disabled={isSubmitting}
+                          >
+                            {isSubmitting ? (
+                              <>
+                                <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                                Sending...
+                              </>
+                            ) : (
+                              <>
+                                <Mail className="w-4 h-4 mr-1" />
+                                Send Message
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                  <Button 
+                    variant="outline" 
+                    className="flex-1"
+                    onClick={() => handleViewProfile(expert)}
+                  >
                     View Profile
                   </Button>
                 </div>

@@ -5,6 +5,7 @@ import { ServicesSection } from '@/components/sections/services-section';
 import { ClientsTalentSection } from '@/components/sections/clients-talent-section';
 import { TestimonialsSection } from '@/components/sections/testimonials-section';
 import { CtaSection } from '@/components/sections/cta-section';
+import { FooterSection } from '@/components/sections/footer-section';
 import { AIAssistant } from '@/components/ai/ai-assistant';
 
 const Index = () => {
@@ -18,6 +19,7 @@ const Index = () => {
         <TestimonialsSection />
         <CtaSection />
       </main>
+      <FooterSection />
       <AIAssistant variant="floating" />
     </div>
   );
