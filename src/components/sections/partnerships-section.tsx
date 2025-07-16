@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import heroIndustrialBg from '@/assets/hero-industrial-bg.jpg';
+import partnershipsCorporateTech from '@/assets/partnerships-corporate-tech.jpg';
 
 export const PartnershipsSection = () => {
   return (
@@ -9,7 +9,7 @@ export const PartnershipsSection = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
         style={{
-          backgroundImage: `url(${heroIndustrialBg})`,
+          backgroundImage: `url(${partnershipsCorporateTech})`,
         }}
       />
       

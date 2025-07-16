@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import clientsNetworkBg from '@/assets/clients-network-bg.jpg';
+import clientsGlobalNetwork from '@/assets/clients-global-network.jpg';
 
 export const ClientsSection = () => {
   return (
@@ -10,7 +10,7 @@ export const ClientsSection = () => {
         id="clients-bg"
         className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 transition-all duration-1000"
         style={{
-          backgroundImage: `url(${clientsNetworkBg})`,
+          backgroundImage: `url(${clientsGlobalNetwork})`,
         }}
       />
       

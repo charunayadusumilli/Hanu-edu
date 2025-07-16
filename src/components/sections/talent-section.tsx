@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import talentProfessionalsBg from '@/assets/talent-professionals-bg.jpg';
+import talentFuturisticWorkspace from '@/assets/talent-futuristic-workspace.jpg';
 
 export const TalentSection = () => {
   return (
@@ -9,7 +9,7 @@ export const TalentSection = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
         style={{
-          backgroundImage: `url(${talentProfessionalsBg})`,
+          backgroundImage: `url(${talentFuturisticWorkspace})`,
         }}
       />
       

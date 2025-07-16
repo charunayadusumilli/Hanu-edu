@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import academyTechBg from '@/assets/academy-tech-bg.jpg';
+import academyAiLearning from '@/assets/academy-ai-learning.jpg';
 
 export const AcademySection = () => {
   return (
@@ -9,7 +9,7 @@ export const AcademySection = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
         style={{
-          backgroundImage: `url(${academyTechBg})`,
+          backgroundImage: `url(${academyAiLearning})`,
         }}
       />
       
