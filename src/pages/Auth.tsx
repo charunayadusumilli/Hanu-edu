@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 export default function Auth() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [mode, setMode] = useState('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
-  const { user, signIn, signUp } = useAuth();
+  const [captchaToken, setCaptchaToken] = useState('');
+  const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -32,53 +33,65 @@ export default function Auth() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !password) return;
+    
+    // For signup, require CAPTCHA
+    if (mode === 'signup' && !captchaToken) {
+      setError('Please complete the CAPTCHA verification.');
+      return;
+    }
+    
     setLoading(true);
     setError('');
 
     try {
-      if (isLogin) {
-        const { error } = await signIn(email, password);
-        if (error) {
-          if (error.message.includes('Invalid login credentials')) {
-            setError('Invalid email or password. Please check your credentials.');
-          } else if (error.message.includes('Email not confirmed')) {
-            setError('Please check your email and click the confirmation link.');
-          } else {
-            setError(error.message);
-          }
-        } else {
-          toast({
-            title: "Welcome back!",
-            description: "You have successfully signed in.",
-          });
-          navigate('/');
-        }
-      } else {
-        if (!fullName.trim()) {
-          setError('Please enter your full name.');
+      if (mode === 'signup') {
+        if (!fullName) {
+          setError('Full name is required for signup');
           return;
         }
-        
-        const { error } = await signUp(email, password, fullName);
+        const { error } = await signUp(email, password, fullName, captchaToken);
         if (error) {
-          if (error.message.includes('User already registered')) {
-            setError('An account with this email already exists. Please sign in instead.');
-          } else if (error.message.includes('Password should be at least')) {
-            setError('Password should be at least 6 characters long.');
-          } else if (error.message.includes('captcha')) {
-            setError('Please complete the captcha verification.');
+          console.error('Signup error:', error);
+          
+          // Handle specific error cases
+          if (error.message?.includes('captcha')) {
+            setError('CAPTCHA verification failed. Please try again.');
+            setCaptchaToken(''); // Reset CAPTCHA
+          } else if (error.message?.includes('User already registered')) {
+            setError('An account with this email already exists. Please try signing in instead.');
+          } else if (error.message?.includes('Password')) {
+            setError('Password must be at least 6 characters long.');
+          } else if (error.message?.includes('Invalid email')) {
+            setError('Please enter a valid email address.');
           } else {
-            setError(error.message);
+            setError(error.message || 'Failed to create account. Please try again.');
           }
         } else {
           toast({
             title: "Account created!",
-            description: "Please check your email to verify your account.",
+            description: "Please check your email to verify your account before signing in.",
           });
-          setIsLogin(true);
+          resetForm();
+        }
+      } else {
+        const { error } = await signIn(email, password);
+        if (error) {
+          console.error('Login error:', error);
+          
+          if (error.message?.includes('Invalid login credentials')) {
+            setError('Invalid email or password. Please check your credentials and try again.');
+          } else if (error.message?.includes('Email not confirmed')) {
+            setError('Please verify your email address before signing in. Check your inbox for a confirmation email.');
+          } else {
+            setError(error.message || 'Failed to sign in. Please try again.');
+          }
+        } else {
+          navigate('/');
         }
       }
-    } catch (err) {
+    } catch (error: any) {
+      console.error('Auth error:', error);
       setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -90,10 +103,11 @@ export default function Auth() {
     setPassword('');
     setFullName('');
     setError('');
+    setCaptchaToken('');
   };
 
   const switchMode = (mode: string) => {
-    setIsLogin(mode === 'login');
+    setMode(mode);
     resetForm();
   };
 
@@ -117,11 +131,11 @@ export default function Auth() {
               Welcome to Hanu Consulting
             </CardTitle>
             <CardDescription>
-              {isLogin ? 'Sign in to your account' : 'Create your account'}
+              {mode === 'login' ? 'Sign in to your account' : 'Create your account'}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="login" onValueChange={switchMode}>
+            <Tabs value={mode} onValueChange={switchMode}>
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="login">Sign In</TabsTrigger>
                 <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -240,8 +254,18 @@ export default function Auth() {
                     </div>
                   </div>
                   
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? 'Creating account...' : 'Create Account'}
+                  <div className="space-y-2">
+                    <Label>Security Verification</Label>
+                    <Turnstile
+                      siteKey="0x4AAAAAAABkMYinukE_t4Se"
+                      onSuccess={(token) => setCaptchaToken(token)}
+                      onError={() => setCaptchaToken('')}
+                      onExpire={() => setCaptchaToken('')}
+                    />
+                  </div>
+                  
+                  <Button type="submit" className="w-full" disabled={loading || !captchaToken}>
+                    {loading ? 'Creating Account...' : 'Create Account'}
                   </Button>
                 </form>
               </TabsContent>
