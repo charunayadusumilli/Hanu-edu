@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import solutionsEnergyBg from '@/assets/solutions-energy-bg.jpg';
+import hanuSolutionsEnergyFuture from '@/assets/hanu-solutions-energy-future.jpg';
 
 export const SolutionsSection = () => {
   return (
@@ -9,7 +9,7 @@ export const SolutionsSection = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
         style={{
-          backgroundImage: `url(${solutionsEnergyBg})`,
+          backgroundImage: `url(${hanuSolutionsEnergyFuture})`,
         }}
       />
       

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import heroIndustrialBg from '@/assets/hero-industrial-bg.jpg';
+import hanuHeroRobotGlobe from '@/assets/hanu-hero-robot-globe.jpg';
 
 export function HeroSection() {
   const { user } = useAuth();
@@ -22,7 +22,7 @@ export function HeroSection() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
         style={{
-          backgroundImage: `url(${heroIndustrialBg})`,
+          backgroundImage: `url(${hanuHeroRobotGlobe})`,
         }}
       />
       
@@ -31,8 +31,11 @@ export function HeroSection() {
       
       {/* Atmospheric Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="energy-particles" />
+        <div className="absolute top-20 left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse rotate-slow" />
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse rotate-reverse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 border border-white/10 rounded-full rotate-slow" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-white/5 rounded-full rotate-reverse" />
       </div>
       
       {/* Content */}
@@ -43,11 +46,11 @@ export function HeroSection() {
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
           className="mb-12"
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white leading-[0.9] mb-4 tracking-[0.05em]">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white leading-[0.9] mb-4 tracking-[0.05em] float-animation">
             HANU CONSULTING
           </h1>
           <p className="text-lg md:text-xl text-white/60 font-light tracking-[0.1em] mb-8">
-            Transforming industries through innovation
+            AI-Powered Excellence
           </p>
         </motion.div>
 
