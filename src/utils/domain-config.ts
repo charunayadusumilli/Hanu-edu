@@ -51,6 +51,12 @@ export const getAuthRedirectUrl = (path: string = '/') => {
   return `${config.siteUrl}${path}`;
 };
 
+// Get callback URL for authentication
+export const getAuthCallbackUrl = () => {
+  const config = getDomainConfig();
+  return `${config.siteUrl}/auth/callback`;
+};
+
 // Get proper site URL for Supabase auth configuration
 export const getSiteUrl = () => {
   const config = getDomainConfig();
