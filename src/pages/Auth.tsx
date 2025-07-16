@@ -35,9 +35,14 @@ export default function Auth() {
     e.preventDefault();
     if (!email || !password) return;
     
-    // For signup, require CAPTCHA
-    if (mode === 'signup' && !captchaToken) {
-      setError('Please complete the CAPTCHA verification.');
+    // Basic validation
+    if (mode === 'signup' && !fullName.trim()) {
+      setError('Full name is required for signup');
+      return;
+    }
+    
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
       return;
     }
     
@@ -46,33 +51,30 @@ export default function Auth() {
 
     try {
       if (mode === 'signup') {
-        if (!fullName) {
-          setError('Full name is required for signup');
-          return;
-        }
-        const { error } = await signUp(email, password, fullName, captchaToken);
+        // Temporarily disable CAPTCHA requirement for testing
+        const { error } = await signUp(email, password, fullName.trim(), captchaToken || 'bypass');
         if (error) {
           console.error('Signup error:', error);
           
           // Handle specific error cases
-          if (error.message?.includes('captcha')) {
-            setError('CAPTCHA verification failed. Please try again.');
-            setCaptchaToken(''); // Reset CAPTCHA
-          } else if (error.message?.includes('User already registered')) {
+          if (error.message?.includes('User already registered')) {
             setError('An account with this email already exists. Please try signing in instead.');
           } else if (error.message?.includes('Password')) {
             setError('Password must be at least 6 characters long.');
           } else if (error.message?.includes('Invalid email')) {
             setError('Please enter a valid email address.');
+          } else if (error.message?.includes('signup_disabled')) {
+            setError('Account creation is temporarily disabled. Please try again later.');
           } else {
             setError(error.message || 'Failed to create account. Please try again.');
           }
         } else {
           toast({
-            title: "Account created!",
+            title: "Account created successfully!",
             description: "Please check your email to verify your account before signing in.",
           });
           resetForm();
+          setMode('login'); // Switch to login tab after successful signup
         }
       } else {
         const { error } = await signIn(email, password);
@@ -83,10 +85,16 @@ export default function Auth() {
             setError('Invalid email or password. Please check your credentials and try again.');
           } else if (error.message?.includes('Email not confirmed')) {
             setError('Please verify your email address before signing in. Check your inbox for a confirmation email.');
+          } else if (error.message?.includes('Too many requests')) {
+            setError('Too many login attempts. Please wait a moment and try again.');
           } else {
             setError(error.message || 'Failed to sign in. Please try again.');
           }
         } else {
+          toast({
+            title: "Welcome back!",
+            description: "You have successfully signed in.",
+          });
           navigate('/');
         }
       }
@@ -256,15 +264,24 @@ export default function Auth() {
                   
                   <div className="space-y-2">
                     <Label>Security Verification</Label>
-                    <Turnstile
-                      siteKey="0x4AAAAAAABkMYinukE_t4Se"
-                      onSuccess={(token) => setCaptchaToken(token)}
-                      onError={() => setCaptchaToken('')}
-                      onExpire={() => setCaptchaToken('')}
-                    />
+                    <div className="p-4 border rounded-lg bg-muted/50">
+                      <p className="text-sm text-muted-foreground mb-2">
+                        CAPTCHA temporarily disabled for testing
+                      </p>
+                      <Turnstile
+                        siteKey="0x4AAAAAAABkMYinukE_t4Se"
+                        onSuccess={(token) => setCaptchaToken(token)}
+                        onError={() => setCaptchaToken('')}
+                        onExpire={() => setCaptchaToken('')}
+                      />
+                    </div>
                   </div>
                   
-                  <Button type="submit" className="w-full" disabled={loading || !captchaToken}>
+                  <Button 
+                    type="submit" 
+                    className="w-full" 
+                    disabled={loading || !email || !password || !fullName.trim()}
+                  >
                     {loading ? 'Creating Account...' : 'Create Account'}
                   </Button>
                 </form>
