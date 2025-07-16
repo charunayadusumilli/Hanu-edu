@@ -2,151 +2,185 @@ import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import Lenis from '@studio-freight/lenis';
 
-// Register the GSAP plugins
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-}
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export const useScrollAnimation = () => {
   useEffect(() => {
-    // Initialize smooth scrolling and parallax effects
+    // Initialize Lenis smooth scroll
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+    });
+
+    // Connect Lenis to GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
+
     const initSmoothScroll = () => {
-      // Enhanced section reveals with staggered animations
-      const sections = document.querySelectorAll('section[id]');
+      // Initialize smooth scroll with enhanced performance
+      const sections = document.querySelectorAll('section');
       
       sections.forEach((section, index) => {
-        // Section fade-in animation
-        gsap.fromTo(
-          section,
+        // Enhanced section fade in animation with better timing
+        gsap.fromTo(section, 
           {
             opacity: 0,
             y: 100,
+            scale: 0.98
           },
           {
             opacity: 1,
             y: 0,
-            duration: 1.5,
-            ease: 'power3.out',
+            scale: 1,
+            duration: 1.8,
+            ease: "power4.out",
             scrollTrigger: {
               trigger: section,
-              start: 'top 85%',
-              end: 'bottom 15%',
-              toggleActions: 'play none none reverse',
-            },
+              start: "top 85%",
+              end: "bottom 15%",
+              toggleActions: "play none none reverse",
+              markers: false
+            }
           }
         );
 
-        // Content animation within sections
-        const content = section.querySelector('h2, .section-content');
+        // Enhanced content animation with stagger
+        const content = section.querySelector('.max-w-6xl, .max-w-4xl');
         if (content) {
-          gsap.fromTo(
-            content,
+          gsap.fromTo(content.children,
             {
               opacity: 0,
-              y: 60,
+              y: 80,
+              scale: 0.95
             },
             {
               opacity: 1,
               y: 0,
-              duration: 1.2,
-              delay: 0.3,
-              ease: 'power2.out',
+              scale: 1,
+              duration: 1.5,
+              ease: "power3.out",
+              stagger: 0.15,
+              scrollTrigger: {
+                trigger: content,
+                start: "top 75%",
+                end: "bottom 25%",
+                toggleActions: "play none none reverse"
+              }
+            }
+          );
+        }
+
+        // Enhanced parallax effect for background images
+        const bgElement = section.querySelector('[style*="backgroundImage"]');
+        if (bgElement) {
+          gsap.fromTo(bgElement,
+            {
+              scale: 1.15,
+              yPercent: -15
+            },
+            {
+              scale: 1.05,
+              yPercent: 15,
+              ease: "none",
               scrollTrigger: {
                 trigger: section,
-                start: 'top 75%',
-                toggleActions: 'play none none reverse',
-              },
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1.5
+              }
             }
           );
         }
       });
 
-      // Enhanced parallax effect for background images
-      const parallaxElements = document.querySelectorAll('.parallax-bg');
-      parallaxElements.forEach((element) => {
-        const bgImage = element.querySelector('div');
-        if (bgImage) {
-          gsap.to(bgImage, {
-            yPercent: -30,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: element,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1,
-            },
-          });
-        }
-      });
-
-      // Smooth navigation highlight
-      const navLinks = document.querySelectorAll('nav a[href^="#"]');
-      navLinks.forEach((link) => {
+      // Enhanced navigation smooth scroll with Lenis
+      const navLinks = document.querySelectorAll('a[href^="#"]');
+      navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
-          const targetId = link.getAttribute('href')?.substring(1);
-          const targetElement = document.getElementById(targetId || '');
-          
-          if (targetElement) {
-            gsap.to(window, {
-              duration: 1.5,
-              scrollTo: {
-                y: targetElement,
-                offsetY: 0,
-              },
-              ease: 'power2.inOut',
-            });
+          const targetId = link.getAttribute('href')?.slice(1);
+          if (targetId) {
+            const target = document.getElementById(targetId);
+            if (target) {
+              lenis.scrollTo(target, {
+                duration: 1.5,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+              });
+            }
           }
         });
       });
 
-      // Add scroll-based scaling effect
-      const scalingElements = document.querySelectorAll('.scale-on-scroll');
-      scalingElements.forEach((element) => {
-        gsap.fromTo(
-          element,
+      // Enhanced scroll-based scaling effect
+      gsap.utils.toArray('.parallax-bg').forEach((element: any) => {
+        gsap.fromTo(element,
           {
-            scale: 0.8,
-            opacity: 0,
+            scale: 1
           },
           {
-            scale: 1,
-            opacity: 1,
-            duration: 1,
-            ease: 'power2.out',
+            scale: 1.03,
+            ease: "none",
             scrollTrigger: {
               trigger: element,
-              start: 'top 80%',
-              end: 'bottom 20%',
-              toggleActions: 'play none none reverse',
-            },
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.8
+            }
           }
         );
       });
 
-      // Add floating elements animation
-      const floatingElements = document.querySelectorAll('.floating-element');
+      // Enhanced floating elements animation
+      const floatingElements = document.querySelectorAll('.animate-pulse');
       floatingElements.forEach((element, index) => {
         gsap.to(element, {
-          y: -20,
-          duration: 3 + (index * 0.5),
-          ease: 'power1.inOut',
-          yoyo: true,
+          y: -30,
+          x: Math.sin(index) * 10,
+          duration: 4 + index * 0.8,
+          ease: "sine.inOut",
           repeat: -1,
+          yoyo: true,
+          delay: index * 0.5
         });
+      });
+
+      // Add section transition effects
+      sections.forEach((section, index) => {
+        gsap.fromTo(section.querySelector('.absolute.inset-0:nth-child(2)'),
+          {
+            opacity: 0.5
+          },
+          {
+            opacity: 0.8,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top center",
+              end: "bottom center",
+              scrub: 1
+            }
+          }
+        );
       });
     };
 
-    // Initialize after DOM is loaded
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initSmoothScroll);
-    } else {
-      initSmoothScroll();
-    }
+    // Initialize animations
+    initSmoothScroll();
 
+    // Cleanup function
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      lenis.destroy();
     };
   }, []);
 };

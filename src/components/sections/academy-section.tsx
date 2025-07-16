@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import academyTechBg from '@/assets/academy-tech-bg.jpg';
 
 export const AcademySection = () => {
   return (
@@ -8,7 +9,7 @@ export const AcademySection = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
         style={{
-          backgroundImage: `url('/src/assets/hanu-hero-bg.jpg')`,
+          backgroundImage: `url(${academyTechBg})`,
         }}
       />
       
@@ -17,18 +18,18 @@ export const AcademySection = () => {
       
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-center min-h-screen px-8 md:px-16 lg:px-24">
-        <div className="max-w-6xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             viewport={{ once: true }}
           >
-            <h2 className="text-6xl md:text-8xl lg:text-9xl font-light text-white tracking-[0.3em] leading-[0.8] mb-8">
-              A&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;M&nbsp;&nbsp;&nbsp;Y
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-[0.05em] leading-[0.9] mb-6">
+              ACADEMY
             </h2>
-            <p className="text-xl md:text-2xl text-white/60 font-light tracking-[0.2em] mt-16">
-              L e a r n i n g &nbsp;&nbsp;&nbsp; I n n o v a t i o n
+            <p className="text-lg md:text-xl text-white/60 font-light tracking-[0.1em]">
+              Learning Innovation
             </p>
           </motion.div>
         </div>
