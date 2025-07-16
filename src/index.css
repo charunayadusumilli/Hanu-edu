@@ -340,4 +340,40 @@
   .parallax {
     transform-style: preserve-3d;
   }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Enhanced parallax support */
+  .parallax-bg {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Floating elements */
+  .floating-element {
+    will-change: transform;
+  }
+
+  /* Scale on scroll elements */
+  .scale-on-scroll {
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Enhanced glass morphism */
+  .glass-enhanced {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Cinematic transitions */
+  .cinematic-transition {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }

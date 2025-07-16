@@ -67,30 +67,34 @@ export function HeroSection() {
             i s &nbsp;&nbsp;&nbsp; a &nbsp;&nbsp;&nbsp; g l o b a l &nbsp;&nbsp;&nbsp; c o n s u l t i n g &nbsp;&nbsp;&nbsp; f i r m
           </motion.p>
 
-          {/* Minimal Action Buttons */}
+          {/* Email Capture */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row gap-8 justify-center items-center"
+            className="flex flex-col items-center space-y-8"
           >
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-6 py-4 bg-white/5 border border-white/10 rounded-none text-white placeholder-white/50 focus:outline-none focus:border-primary/40 backdrop-blur-xl transition-all duration-300 font-light tracking-wider"
+              />
+              <Button 
+                size="lg" 
+                className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4 text-base font-light tracking-wider transition-all duration-300 rounded-none"
+              >
+                Begin
+              </Button>
+            </div>
             <Button 
               size="lg" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 px-12 py-6 text-base font-light tracking-wider transition-all duration-300"
-              asChild
-            >
-              <Link to={user ? "/dashboard" : "/auth"}>
-                {user ? "Enter Portal" : "Begin"}
-              </Link>
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-primary/20 hover:border-primary/40 px-12 py-6 text-base font-light tracking-wider backdrop-blur-xl transition-all duration-300"
+              variant="ghost" 
+              className="text-white/60 hover:text-white/80 px-8 py-4 text-base font-light tracking-wider transition-all duration-300"
               asChild
             >
               <Link to="/solutions">
-                Explore
+                Explore Solutions
               </Link>
             </Button>
           </motion.div>
