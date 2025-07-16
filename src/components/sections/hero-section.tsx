@@ -4,16 +4,74 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 import hanuHeroRobotGlobe from '@/assets/hanu-hero-robot-globe.jpg';
 
 export function HeroSection() {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle email submission logic here
-    console.log('Email submitted:', email);
+    if (!email || loading) return;
+    
+    setLoading(true);
+    
+    try {
+      // Save email to subscribers table
+      const { error: insertError } = await supabase
+        .from('subscribers')
+        .insert([{ 
+          email: email.toLowerCase().trim(),
+          user_id: user?.id || null,
+          subscribed: true 
+        }]);
+      
+      if (insertError) {
+        // Handle duplicate email gracefully
+        if (insertError.code === '23505') {
+          toast({
+            title: "Already subscribed!",
+            description: "This email is already in our system. Check your inbox for previous instructions.",
+          });
+        } else {
+          throw insertError;
+        }
+      } else {
+        // Send welcome email
+        const { error: emailError } = await supabase.functions.invoke('send-welcome-email', {
+          body: { email: email.toLowerCase().trim() }
+        });
+        
+        if (emailError) {
+          console.error('Email sending error:', emailError);
+          // Don't fail the whole process if email fails
+          toast({
+            title: "Confirmation saved!",
+            description: "Your email has been saved. Welcome instructions will be sent shortly.",
+          });
+        } else {
+          toast({
+            title: "Welcome to Hanu Consulting!",
+            description: "Confirmation sent! Check your email for setup instructions and next steps.",
+          });
+        }
+      }
+      
+      setEmail('');
+    } catch (error) {
+      console.error('Subscription error:', error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
   
   return (
@@ -89,9 +147,10 @@ export function HeroSection() {
               />
               <button
                 type="submit"
-                className="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 group"
+                disabled={loading || !email}
+                className="px-8 py-3 bg-primary hover:bg-primary/90 disabled:bg-primary/50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 group"
               >
-                Get Started
+                {loading ? 'Sending...' : 'Get Started'}
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
