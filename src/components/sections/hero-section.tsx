@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Sparkles, Zap, Brain, Target } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import heroBackground from '@/assets/montfort-hero-bg.jpg';
+import heroBackground from '@/assets/hanu-hero-bg.jpg';
 
 export function HeroSection() {
   const { user } = useAuth();
@@ -29,99 +29,70 @@ export function HeroSection() {
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-6xl mx-auto">
-          {/* Sophisticated Badge */}
+        <div className="text-center max-w-7xl mx-auto">
+          {/* Minimal Badge */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-12"
+            className="mb-16"
           >
-            <Badge variant="outline" className="glass-strong px-8 py-3 text-primary border-primary/20 backdrop-blur-xl">
-              <Sparkles className="w-4 h-4 mr-3" />
-              Strategic Business Excellence
-            </Badge>
+            <span className="inline-block px-6 py-2 text-sm font-medium tracking-widest uppercase text-primary/80 border border-primary/20 backdrop-blur-xl">
+              Strategic Excellence
+            </span>
           </motion.div>
 
-          {/* Cinematic Main Heading */}
+          {/* Montfort-Style Main Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-space-grotesk font-bold mb-8 leading-[0.9]"
+            className="text-6xl md:text-8xl lg:text-9xl font-space-grotesk font-light mb-20 leading-[0.8]"
           >
-            <span className="text-gradient-primary tracking-tight">HANU</span>
-            <br />
-            <span className="text-foreground/90 font-light tracking-wide">CONSULTING</span>
+            <span className="block text-foreground tracking-[0.15em] mb-4">
+              H&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;U
+            </span>
+            <span className="block text-primary/90 font-extralight tracking-[0.2em]">
+              C&nbsp;&nbsp;&nbsp;&nbsp;O&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;S&nbsp;&nbsp;&nbsp;&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;L&nbsp;&nbsp;&nbsp;&nbsp;T&nbsp;&nbsp;&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;G
+            </span>
           </motion.h1>
 
-          {/* Sophisticated Subtitle */}
+          {/* Minimal Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="text-xl md:text-2xl lg:text-3xl text-muted-foreground/80 mb-16 max-w-4xl mx-auto leading-relaxed font-light"
+            className="text-lg md:text-xl text-muted-foreground/60 mb-20 max-w-2xl mx-auto leading-relaxed tracking-wide"
           >
-            Elevating enterprises through strategic excellence and innovative solutions.
-            <br className="hidden md:block" />
-            <span className="text-primary/90 font-medium">Where vision meets execution.</span>
+            Connecting excellence across energy and maritime industries
           </motion.p>
 
-          {/* Elegant Action Buttons */}
+          {/* Minimal Action Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20"
+            className="flex flex-col sm:flex-row gap-8 justify-center items-center"
           >
             <Button 
               size="lg" 
-              className="bg-gradient-primary hover:scale-105 shadow-glow-strong px-10 py-5 text-lg font-medium tracking-wide transition-all duration-300"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 px-12 py-6 text-base font-light tracking-wider transition-all duration-300"
               asChild
             >
               <Link to={user ? "/dashboard" : "/auth"}>
-                <Target className="w-5 h-5 mr-3" />
-                {user ? "Enter Portal" : "Begin Journey"}
-                <ArrowRight className="w-5 h-5 ml-3" />
+                {user ? "Enter Portal" : "Begin"}
               </Link>
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
-              className="glass-strong border-primary/20 hover:border-primary/40 px-10 py-5 text-lg backdrop-blur-xl transition-all duration-300 hover:scale-105"
+              className="border-primary/20 hover:border-primary/40 px-12 py-6 text-base font-light tracking-wider backdrop-blur-xl transition-all duration-300"
               asChild
             >
               <Link to="/solutions">
-                <Brain className="w-5 h-5 mr-3" />
-                Explore Solutions
+                Explore
               </Link>
             </Button>
-          </motion.div>
-
-          {/* Sophisticated Feature Grid */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
-          >
-            {[
-              { icon: Brain, title: "Strategic Innovation", desc: "Cutting-edge methodologies and frameworks" },
-              { icon: Zap, title: "Accelerated Growth", desc: "Rapid transformation and measurable results" },
-              { icon: Target, title: "Executive Excellence", desc: "World-class leadership and expertise" }
-            ].map((feature, index) => (
-              <motion.div 
-                key={index} 
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.2 + (index * 0.2) }}
-                className="glass-strong rounded-2xl p-8 hover:shadow-glow-strong transition-all duration-500 hover:scale-105 group"
-              >
-                <feature.icon className="w-10 h-10 text-primary mx-auto mb-6 group-hover:scale-110 transition-transform duration-300" />
-                <h3 className="font-semibold text-xl mb-4 tracking-wide">{feature.title}</h3>
-                <p className="text-muted-foreground/80 text-base leading-relaxed">{feature.desc}</p>
-              </motion.div>
-            ))}
           </motion.div>
         </div>
       </div>

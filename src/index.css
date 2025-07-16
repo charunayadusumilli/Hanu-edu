@@ -201,6 +201,19 @@
 }
 
 @layer components {
+  /* Montfort-style letter spacing */
+  .montfort-spacing {
+    letter-spacing: 0.15em;
+  }
+  
+  .montfort-spacing-wide {
+    letter-spacing: 0.2em;
+  }
+  
+  .montfort-spacing-wider {
+    letter-spacing: 0.25em;
+  }
+  
   /* Glass morphism components */
   .glass {
     background: var(--glass-bg);

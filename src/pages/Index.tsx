@@ -2,7 +2,8 @@ import React from 'react';
 import { Navigation } from '@/components/ui/navigation';
 import { HeroSection } from '@/components/sections/hero-section';
 import { ServicesSection } from '@/components/sections/services-section';
-import { ClientsTalentSection } from '@/components/sections/clients-talent-section';
+import { EnergySection } from '@/components/sections/energy-section';
+import { MaritimeSection } from '@/components/sections/maritime-section';
 import { TestimonialsSection } from '@/components/sections/testimonials-section';
 import { CtaSection } from '@/components/sections/cta-section';
 import { FooterSection } from '@/components/sections/footer-section';
@@ -15,7 +16,8 @@ const Index = () => {
       <main>
         <HeroSection />
         <ServicesSection />
-        <ClientsTalentSection />
+        <EnergySection />
+        <MaritimeSection />
         <TestimonialsSection />
         <CtaSection />
       </main>
