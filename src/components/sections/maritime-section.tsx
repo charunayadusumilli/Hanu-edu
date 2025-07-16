@@ -66,7 +66,7 @@ export function MaritimeSection() {
             {/* Minimal Badge */}
             <div className="mb-12 flex justify-end">
               <span className="inline-block px-6 py-2 text-sm font-medium tracking-widest uppercase text-primary/80 border border-primary/20 backdrop-blur-xl">
-                For Talent
+                Hello Talent
               </span>
             </div>
 

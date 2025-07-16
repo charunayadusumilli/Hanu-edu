@@ -18,29 +18,11 @@ interface NavigationProps {
 }
 
 const navigationItems = [
-  {
-    id: 'clients',
-    label: 'Hanu Clients',
-    icon: Users,
-    sections: [
-      { label: 'Overview', href: '/clients' },
-      { label: 'Submit Challenge', href: '/clients' },
-      { label: 'Solutions & Cases', href: '/solutions' },
-      { label: 'Meet Experts', href: '/experts' },
-      { label: 'Project Tracker', href: '/projects' },
-      { label: 'Dashboard', href: '/dashboard' }
-    ]
-  },
-  {
-    id: 'talent',
-    label: 'Hanu Talent',
-    icon: User,
-    sections: [
-      { label: 'Join as Consultant', href: '/talent' },
-      { label: 'Expert Directory', href: '/experts' },
-      { label: 'Dashboard', href: '/dashboard' }
-    ]
-  }
+  { id: 'clients', label: 'Hello Clients', href: '#clients' },
+  { id: 'talent', label: 'Hello Talent', href: '#talent' },
+  { id: 'academy', label: 'Hanu AI Academy', href: '#academy' },
+  { id: 'partnerships', label: 'Hanu Partnerships', href: '#partnerships' },
+  { id: 'solutions', label: 'Hanu Solutions', href: '#solutions' }
 ];
 
 export function Navigation({ className }: NavigationProps) {
@@ -92,7 +74,7 @@ export function Navigation({ className }: NavigationProps) {
               </div>
               <div>
                 <h1 className="text-xl font-space-grotesk font-bold text-gradient-primary">
-                  Hanu Consulting
+                  Hello Consulting
                 </h1>
                 <p className="text-xs text-muted-foreground">AI-Powered Solutions</p>
               </div>
@@ -102,56 +84,13 @@ export function Navigation({ className }: NavigationProps) {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             {navigationItems.map((item) => (
-              <div
+              <a
                 key={item.id}
-                className="relative"
-                onMouseEnter={() => setHoveredTab(item.id)}
-                onMouseLeave={() => setHoveredTab(null)}
+                href={item.href}
+                className="text-sm font-medium tracking-wider uppercase text-foreground/80 hover:text-primary transition-colors duration-300 border-b-2 border-transparent hover:border-primary/50"
               >
-                <Button
-                  variant={activeTab === item.id ? "default" : "ghost"}
-                  className={cn(
-                    "relative group px-6 py-3 transition-all duration-300",
-                    activeTab === item.id 
-                      ? "bg-gradient-primary text-white shadow-glow" 
-                      : "hover:bg-surface-elevated"
-                  )}
-                  onClick={() => setActiveTab(item.id)}
-                >
-                  <item.icon className="w-4 h-4 mr-2" />
-                  {item.label}
-                  <ChevronDown className="w-4 h-4 ml-2 transition-transform group-hover:rotate-180" />
-                </Button>
-
-                {/* Dropdown Menu */}
-                <AnimatePresence>
-                  {hoveredTab === item.id && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 mt-2 w-64 glass-strong rounded-xl border border-primary/20 shadow-lg overflow-hidden"
-                    >
-                      {item.sections.map((section, index) => (
-                        <motion.div
-                          key={section.label}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.05 }}
-                        >
-                          <Link
-                            to={section.href}
-                            className="block px-4 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors border-b border-border/10 last:border-b-0"
-                          >
-                            {section.label}
-                          </Link>
-                        </motion.div>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                {item.label}
+              </a>
             ))}
           </div>
 
@@ -237,33 +176,13 @@ export function Navigation({ className }: NavigationProps) {
             >
               <div className="p-6 space-y-4">
                 {navigationItems.map((item) => (
-                  <div key={item.id} className="space-y-2">
-                    <Button
-                      variant={activeTab === item.id ? "default" : "ghost"}
-                      className="w-full justify-start"
-                      onClick={() => setActiveTab(item.id)}
-                    >
-                      <item.icon className="w-4 h-4 mr-2" />
-                      {item.label}
-                    </Button>
-                    {activeTab === item.id && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="pl-6 space-y-1"
-                      >
-                        {item.sections.map((section) => (
-                          <Link
-                            key={section.label}
-                            to={section.href}
-                            className="block py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-                          >
-                            {section.label}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </div>
+                  <a
+                    key={item.id}
+                    href={item.href}
+                    className="block py-3 text-sm font-medium tracking-wider uppercase text-foreground/80 hover:text-primary transition-colors border-b border-border/10 last:border-b-0"
+                  >
+                    {item.label}
+                  </a>
                 ))}
                 <div className="pt-4 border-t border-border space-y-2">
                   {user ? (
