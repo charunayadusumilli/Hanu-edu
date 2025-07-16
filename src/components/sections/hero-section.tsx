@@ -21,16 +21,22 @@ export function HeroSection() {
     setLoading(true);
     
     try {
+      console.log('Attempting to subscribe email:', email);
+      
       // Save email to subscribers table
-      const { error: insertError } = await supabase
+      const { data: insertData, error: insertError } = await supabase
         .from('subscribers')
         .insert([{ 
           email: email.toLowerCase().trim(),
           user_id: user?.id || null,
           subscribed: true 
-        }]);
+        }])
+        .select();
+      
+      console.log('Insert result:', { insertData, insertError });
       
       if (insertError) {
+        console.error('Database insert error:', insertError);
         // Handle duplicate email gracefully
         if (insertError.code === '23505') {
           toast({
@@ -41,22 +47,36 @@ export function HeroSection() {
           throw insertError;
         }
       } else {
-        // Send welcome email
-        const { error: emailError } = await supabase.functions.invoke('send-welcome-email', {
-          body: { email: email.toLowerCase().trim() }
-        });
+        console.log('Email successfully saved to database');
         
-        if (emailError) {
-          console.error('Email sending error:', emailError);
-          // Don't fail the whole process if email fails
+        // Send welcome email
+        try {
+          console.log('Attempting to send welcome email...');
+          const { data: emailData, error: emailError } = await supabase.functions.invoke('send-welcome-email', {
+            body: { email: email.toLowerCase().trim() }
+          });
+          
+          console.log('Email function result:', { emailData, emailError });
+          
+          if (emailError) {
+            console.error('Email sending error:', emailError);
+            // Don't fail the whole process if email fails
+            toast({
+              title: "Confirmation saved!",
+              description: "Your email has been saved. Welcome instructions will be sent shortly.",
+            });
+          } else {
+            console.log('Welcome email sent successfully');
+            toast({
+              title: "Welcome to Hanu Consulting!",
+              description: "Confirmation sent! Check your email for setup instructions and next steps.",
+            });
+          }
+        } catch (emailError) {
+          console.error('Email function call failed:', emailError);
           toast({
             title: "Confirmation saved!",
             description: "Your email has been saved. Welcome instructions will be sent shortly.",
-          });
-        } else {
-          toast({
-            title: "Welcome to Hanu Consulting!",
-            description: "Confirmation sent! Check your email for setup instructions and next steps.",
           });
         }
       }
