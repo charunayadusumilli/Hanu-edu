@@ -50,7 +50,7 @@ export function HeroSection() {
             className="text-6xl md:text-8xl lg:text-9xl font-space-grotesk font-light mb-20 leading-[0.8]"
           >
             <span className="block text-foreground tracking-[0.15em] mb-4">
-              H&nbsp;&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;L&nbsp;&nbsp;&nbsp;&nbsp;L&nbsp;&nbsp;&nbsp;&nbsp;O
+              H&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;U
             </span>
             <span className="block text-primary/90 font-extralight tracking-[0.2em]">
               C&nbsp;&nbsp;&nbsp;&nbsp;O&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;S&nbsp;&nbsp;&nbsp;&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;L&nbsp;&nbsp;&nbsp;&nbsp;T&nbsp;&nbsp;&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;G
@@ -64,7 +64,7 @@ export function HeroSection() {
             transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="text-lg md:text-xl text-muted-foreground/60 mb-20 max-w-2xl mx-auto leading-relaxed tracking-wide"
           >
-            Connecting excellence across energy and maritime industries
+            i s &nbsp;&nbsp;&nbsp; a &nbsp;&nbsp;&nbsp; g l o b a l &nbsp;&nbsp;&nbsp; c o n s u l t i n g &nbsp;&nbsp;&nbsp; f i r m
           </motion.p>
 
           {/* Minimal Action Buttons */}

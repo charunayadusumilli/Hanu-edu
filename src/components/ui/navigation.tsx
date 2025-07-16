@@ -18,11 +18,11 @@ interface NavigationProps {
 }
 
 const navigationItems = [
-  { id: 'clients', label: 'Hello Clients', href: '#clients' },
-  { id: 'talent', label: 'Hello Talent', href: '#talent' },
-  { id: 'academy', label: 'Hanu AI Academy', href: '#academy' },
-  { id: 'partnerships', label: 'Hanu Partnerships', href: '#partnerships' },
-  { id: 'solutions', label: 'Hanu Solutions', href: '#solutions' }
+  { id: 'clients', label: 'HANU Clients', href: '#clients' },
+  { id: 'talent', label: 'HANU Talent', href: '#talent' },
+  { id: 'academy', label: 'HANU AI Academy', href: '#academy' },
+  { id: 'partnerships', label: 'HANU Partnerships', href: '#partnerships' },
+  { id: 'solutions', label: 'HANU Solutions', href: '#solutions' }
 ];
 
 export function Navigation({ className }: NavigationProps) {
@@ -73,8 +73,8 @@ export function Navigation({ className }: NavigationProps) {
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-space-grotesk font-bold text-gradient-primary">
-                  Hello Consulting
+                <h1 className="text-xl font-space-grotesk font-bold text-gradient-primary tracking-[0.2em]">
+                  HANU
                 </h1>
                 <p className="text-xs text-muted-foreground">AI-Powered Solutions</p>
               </div>
