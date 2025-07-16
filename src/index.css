@@ -8,25 +8,25 @@
 
 @layer base {
   :root {
-    /* Core Brand Colors - Sophisticated AI Theme */
-    --background: 220 27% 6%;
-    --foreground: 210 40% 98%;
+    /* Montfort-Inspired Sophisticated Palette */
+    --background: 0 0% 2%;
+    --foreground: 0 0% 98%;
     
-    --surface: 220 25% 8%;
-    --surface-elevated: 220 23% 12%;
-    --surface-hover: 220 21% 16%;
+    --surface: 0 0% 4%;
+    --surface-elevated: 0 0% 6%;
+    --surface-hover: 0 0% 8%;
     
-    /* AI-Inspired Primary Palette */
-    --primary: 200 90% 55%;
-    --primary-hover: 200 85% 60%;
-    --primary-light: 200 100% 85%;
-    --primary-foreground: 220 27% 6%;
+    /* Luxury Gold & Deep Navy Primary */
+    --primary: 45 100% 70%;
+    --primary-hover: 45 95% 75%;
+    --primary-light: 45 100% 95%;
+    --primary-foreground: 0 0% 2%;
     
-    /* Accent Colors for Interactive Elements */
-    --accent-cyan: 180 100% 50%;
-    --accent-purple: 270 90% 65%;
-    --accent-green: 140 80% 55%;
-    --accent-orange: 30 95% 60%;
+    /* Montfort-Style Accent Colors */
+    --accent-gold: 45 100% 70%;
+    --accent-navy: 210 100% 15%;
+    --accent-silver: 0 0% 75%;
+    --accent-warm: 25 80% 60%;
     
     /* Semantic Colors */
     --secondary: 220 20% 20%;
@@ -58,22 +58,22 @@
     
     --radius: 0.75rem;
     
-    /* Gradients - Immersive AI Effects */
-    --gradient-primary: linear-gradient(135deg, hsl(200 90% 55%), hsl(180 100% 50%));
-    --gradient-secondary: linear-gradient(135deg, hsl(270 90% 65%), hsl(200 90% 55%));
-    --gradient-surface: linear-gradient(135deg, hsl(220 25% 8%), hsl(220 23% 12%));
-    --gradient-glow: radial-gradient(circle at center, hsl(200 90% 55% / 0.3), transparent 70%);
+    /* Montfort-Inspired Luxury Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(45 100% 70%), hsl(25 80% 60%));
+    --gradient-secondary: linear-gradient(135deg, hsl(210 100% 15%), hsl(0 0% 4%));
+    --gradient-surface: linear-gradient(135deg, hsl(0 0% 4%), hsl(0 0% 6%));
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 2% / 0.7), hsl(0 0% 2% / 0.9));
     
-    /* Glass Effects */
-    --glass-bg: hsl(220 25% 8% / 0.8);
-    --glass-border: hsl(200 90% 55% / 0.2);
+    /* Sophisticated Glass Effects */
+    --glass-bg: hsl(0 0% 4% / 0.85);
+    --glass-border: hsl(45 100% 70% / 0.15);
     
-    /* Shadows - Immersive Depth */
-    --shadow-sm: 0 2px 8px hsl(220 27% 6% / 0.3);
-    --shadow-md: 0 8px 24px hsl(220 27% 6% / 0.4);
-    --shadow-lg: 0 16px 40px hsl(220 27% 6% / 0.5);
-    --shadow-glow: 0 0 40px hsl(200 90% 55% / 0.3);
-    --shadow-glow-strong: 0 0 60px hsl(200 90% 55% / 0.5);
+    /* Cinematic Shadows & Depth */
+    --shadow-sm: 0 2px 12px hsl(0 0% 0% / 0.4);
+    --shadow-md: 0 8px 32px hsl(0 0% 0% / 0.5);
+    --shadow-lg: 0 20px 50px hsl(0 0% 0% / 0.6);
+    --shadow-glow: 0 0 50px hsl(45 100% 70% / 0.25);
+    --shadow-glow-strong: 0 0 80px hsl(45 100% 70% / 0.4);
     
     /* Animation Timings */
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -176,9 +176,9 @@
   body {
     @apply bg-background text-foreground font-inter antialiased;
     background-image: 
-      radial-gradient(circle at 20% 80%, hsl(200 90% 55% / 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, hsl(270 90% 65% / 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, hsl(180 100% 50% / 0.05) 0%, transparent 50%);
+      radial-gradient(circle at 20% 80%, hsl(45 100% 70% / 0.03) 0%, transparent 70%),
+      radial-gradient(circle at 80% 20%, hsl(210 100% 15% / 0.05) 0%, transparent 70%),
+      radial-gradient(circle at 50% 50%, hsl(0 0% 4% / 0.8) 0%, transparent 100%);
   }
   
   /* Enhanced scrollbar styling */
