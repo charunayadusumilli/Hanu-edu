@@ -65,6 +65,8 @@ export default function Auth() {
             setError('An account with this email already exists. Please sign in instead.');
           } else if (error.message.includes('Password should be at least')) {
             setError('Password should be at least 6 characters long.');
+          } else if (error.message.includes('captcha')) {
+            setError('Please complete the captcha verification.');
           } else {
             setError(error.message);
           }

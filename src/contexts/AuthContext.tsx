@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { getAuthRedirectUrl, validateDomainConfig, getSiteUrl, isDomainSecure } from '@/utils/domain-config';
 
 interface AuthContextType {
   user: User | null;
@@ -20,11 +19,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Validate domain configuration on startup
-    if (!validateDomainConfig()) {
-      console.error('Domain configuration validation failed');
-    }
-    
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -32,10 +26,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
         
-        // Log successful auth events (disabled for now)
-        // if (event === 'SIGNED_IN' && session?.user) {
-        //   SecurityLogger.logAuthAttempt(true, session.user.email || 'unknown', 'Successful sign in');
-        // }
+        // Handle successful sign in
+        if (event === 'SIGNED_IN' && session?.user) {
+          console.log('User signed in successfully');
+        }
       }
     );
 
@@ -63,23 +57,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      // Validate domain configuration
-      if (!validateDomainConfig()) {
-        const error = new Error('Invalid domain configuration');
-        // await SecurityLogger.logAuthAttempt(false, email, 'Invalid domain configuration');
-        return { error };
-      }
-      
-      // Ensure secure connection for custom domain
-      if (!isDomainSecure()) {
-        const error = new Error('Secure connection required for authentication');
-        // await SecurityLogger.logAuthAttempt(false, email, 'Insecure connection');
-        return { error };
-      }
-      
-      // Get proper site URL for hanu-consulting.com
-      const siteUrl = getSiteUrl();
-      const redirectUrl = `${siteUrl}/auth/callback`;
+      // Get current origin for redirect URL
+      const redirectUrl = `${window.location.origin}/auth/callback`;
       
       const { error } = await supabase.auth.signUp({
         email,
@@ -94,12 +73,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       });
       
-      // Log registration attempt (disabled for now)
-      // await SecurityLogger.logAuthAttempt(!error, email, error?.message);
-      
       return { error };
     } catch (error: any) {
-      // await SecurityLogger.logAuthAttempt(false, email, error.message);
       return { error };
     }
   };
