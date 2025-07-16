@@ -30,6 +30,71 @@ export const useScrollAnimation = () => {
       // Initialize smooth scroll with enhanced performance
       const sections = document.querySelectorAll('section');
       
+      // Globe-to-Map Transition Animation
+      const initGlobeTransition = () => {
+        const globeElement = document.getElementById('transition-globe');
+        const clientsSection = document.getElementById('clients');
+        const clientsBg = document.getElementById('clients-bg');
+        const clientsOverlay = document.getElementById('clients-overlay');
+        const globeReceiver = document.getElementById('globe-receiver');
+        
+        if (globeElement && clientsSection && clientsBg && clientsOverlay && globeReceiver) {
+          // Create ScrollTrigger for globe transition
+          ScrollTrigger.create({
+            trigger: clientsSection,
+            start: "top 80%",
+            end: "top 20%",
+            scrub: 1,
+            onUpdate: (self) => {
+              const progress = self.progress;
+              
+              // Globe scaling and positioning
+              gsap.set(globeElement, {
+                scale: 1 + (progress * 8),
+                opacity: 1 - (progress * 0.3)
+              });
+              
+              // Globe receiver animation
+              gsap.set(globeReceiver, {
+                opacity: progress * 0.8
+              });
+              
+              // Clients background fade-in
+              gsap.set(clientsBg, {
+                opacity: progress,
+                scale: 1.1 - (progress * 0.05)
+              });
+              
+              // Overlay transition
+              gsap.set(clientsOverlay, {
+                opacity: 0.7 + (progress * 0.3)
+              });
+            },
+            onToggle: (self) => {
+              if (self.isActive && self.progress === 1) {
+                // Clean up globe element after transition
+                gsap.to(globeElement, {
+                  opacity: 0,
+                  duration: 0.5,
+                  ease: "power2.out"
+                });
+                
+                // Ensure clients section is fully visible
+                gsap.to(clientsBg, {
+                  opacity: 1,
+                  scale: 1.1,
+                  duration: 0.3,
+                  ease: "power2.out"
+                });
+              }
+            }
+          });
+        }
+      };
+      
+      // Initialize globe transition
+      setTimeout(initGlobeTransition, 100);
+      
       sections.forEach((section, index) => {
         // Enhanced section fade in animation with better timing
         gsap.fromTo(section, 

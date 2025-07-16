@@ -7,14 +7,20 @@ export const ClientsSection = () => {
     <section id="clients" className="min-h-screen relative overflow-hidden parallax-bg">
       {/* Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
+        id="clients-bg"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 transition-all duration-1000"
         style={{
           backgroundImage: `url(${clientsNetworkBg})`,
         }}
       />
       
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/70" />
+      <div id="clients-overlay" className="absolute inset-0 bg-black/70 transition-opacity duration-1000" />
+      
+      {/* Globe Transition Receiver */}
+      <div id="globe-receiver" className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0">
+        <div className="w-screen h-screen bg-gradient-to-br from-primary/30 to-accent/30 backdrop-blur-xl rounded-full scale-0" />
+      </div>
       
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-center min-h-screen px-8 md:px-16 lg:px-24">

@@ -38,6 +38,22 @@ export function HeroSection() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 border border-white/5 rounded-full rotate-reverse" />
       </div>
       
+      {/* Globe Transition Element */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div 
+          id="transition-globe"
+          className="w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 rounded-full border-2 border-primary/30 bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm globe-element relative overflow-hidden"
+          style={{
+            boxShadow: '0 0 100px rgba(59, 130, 246, 0.3), inset 0 0 100px rgba(59, 130, 246, 0.1)'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full animate-pulse" />
+          <div className="absolute top-1/4 left-1/4 w-8 h-8 bg-white/20 rounded-full blur-sm animate-pulse" style={{ animationDelay: '0.5s' }} />
+          <div className="absolute bottom-1/3 right-1/3 w-6 h-6 bg-white/15 rounded-full blur-sm animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full border border-white/10 rounded-full rotate-slow" />
+        </div>
+      </div>
+      
       {/* Content */}
       <div className="relative z-10 text-center px-8 max-w-4xl mx-auto">
         <motion.div

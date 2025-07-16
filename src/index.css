@@ -482,4 +482,24 @@
     animation: float 8s ease-in-out infinite;
     animation-delay: -4s;
   }
+
+  /* Globe Animation */
+  .globe-element {
+    animation: rotate 20s linear infinite;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+  }
+  
+  .globe-element:hover {
+    transform: scale(1.05);
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
