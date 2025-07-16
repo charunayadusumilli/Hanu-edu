@@ -13,6 +13,7 @@ import TalentHub from "./pages/TalentHub";
 import ExpertsDirectory from "./pages/ExpertsDirectory";
 import SolutionsAndCases from "./pages/SolutionsAndCases";
 import ProjectTracker from "./pages/ProjectTracker";
+import DomainTest from "./pages/DomainTest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/clients" element={<ProtectedRoute><ClientsHub /></ProtectedRoute>} />
             <Route path="/talent" element={<ProtectedRoute><TalentHub /></ProtectedRoute>} />
             <Route path="/projects" element={<ProtectedRoute><ProjectTracker /></ProtectedRoute>} />
+            <Route path="/domain-test" element={<DomainTest />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
