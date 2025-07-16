@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { SecurityLogger } from '@/utils/security-logger';
 import { getAuthRedirectUrl, validateDomainConfig, getSiteUrl, isDomainSecure } from '@/utils/domain-config';
 
 interface AuthContextType {
@@ -33,10 +32,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
         
-        // Log successful auth events
-        if (event === 'SIGNED_IN' && session?.user) {
-          SecurityLogger.logAuthAttempt(true, session.user.email || 'unknown', 'Successful sign in');
-        }
+        // Log successful auth events (disabled for now)
+        // if (event === 'SIGNED_IN' && session?.user) {
+        //   SecurityLogger.logAuthAttempt(true, session.user.email || 'unknown', 'Successful sign in');
+        // }
       }
     );
 
@@ -56,8 +55,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
     });
     
-    // Log authentication attempt
-    await SecurityLogger.logAuthAttempt(!error, email, error?.message);
+    // Log authentication attempt (disabled for now)
+    // await SecurityLogger.logAuthAttempt(!error, email, error?.message);
     
     return { error };
   };
@@ -67,14 +66,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Validate domain configuration
       if (!validateDomainConfig()) {
         const error = new Error('Invalid domain configuration');
-        await SecurityLogger.logAuthAttempt(false, email, 'Invalid domain configuration');
+        // await SecurityLogger.logAuthAttempt(false, email, 'Invalid domain configuration');
         return { error };
       }
       
       // Ensure secure connection for custom domain
       if (!isDomainSecure()) {
         const error = new Error('Secure connection required for authentication');
-        await SecurityLogger.logAuthAttempt(false, email, 'Insecure connection');
+        // await SecurityLogger.logAuthAttempt(false, email, 'Insecure connection');
         return { error };
       }
       
@@ -95,12 +94,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       });
       
-      // Log registration attempt
-      await SecurityLogger.logAuthAttempt(!error, email, error?.message);
+      // Log registration attempt (disabled for now)
+      // await SecurityLogger.logAuthAttempt(!error, email, error?.message);
       
       return { error };
     } catch (error: any) {
-      await SecurityLogger.logAuthAttempt(false, email, error.message);
+      // await SecurityLogger.logAuthAttempt(false, email, error.message);
       return { error };
     }
   };
