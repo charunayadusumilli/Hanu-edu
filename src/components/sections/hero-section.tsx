@@ -35,7 +35,7 @@ export function HeroSection() {
       
       console.log('Insert result:', { insertData, insertError });
       
-      if (insertError) {
+      if (insertError && insertError.message) {
         console.error('Database insert error:', insertError);
         // Handle duplicate email gracefully
         if (insertError.code === '23505') {
@@ -43,6 +43,7 @@ export function HeroSection() {
             title: "Already subscribed!",
             description: "This email is already in our system. Check your inbox for previous instructions.",
           });
+          return; // Exit early for duplicate email
         } else {
           throw insertError;
         }
