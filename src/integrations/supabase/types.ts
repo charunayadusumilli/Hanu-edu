@@ -7,10 +7,10 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
@@ -3166,27 +3166,27 @@ export type Database = {
     Functions: {
       calculate_job_quality_score: {
         Args: {
-          job_title: string
-          job_description: string
-          company_name: string
-          salary_min: number
-          salary_max: number
-          requirements: string[]
           benefits: string[]
+          company_name: string
+          job_description: string
+          job_title: string
+          requirements: string[]
+          salary_max: number
+          salary_min: number
         }
         Returns: number
       }
       check_admin_role: {
         Args: {
-          user_uuid: string
           required_role: Database["public"]["Enums"]["admin_role"]
+          user_uuid: string
         }
         Returns: boolean
       }
       check_auth_rate_limit: {
         Args: {
-          p_ip_address: unknown
           p_attempt_type: string
+          p_ip_address: unknown
           p_max_attempts?: number
           p_window_minutes?: number
         }
@@ -3194,9 +3194,9 @@ export type Database = {
       }
       check_rate_limit: {
         Args: {
-          p_user_id: string
           p_action: string
           p_limit?: number
+          p_user_id: string
           p_window_minutes?: number
         }
         Returns: boolean
@@ -3219,26 +3219,26 @@ export type Database = {
       }
       log_admin_action: {
         Args: {
-          p_admin_user_id: string
           p_action: string
-          p_resource_type: string
-          p_resource_id?: string
+          p_admin_user_id: string
           p_details?: Json
           p_ip_address?: unknown
+          p_resource_id?: string
+          p_resource_type: string
           p_user_agent?: string
         }
         Returns: string
       }
       log_security_event: {
         Args: {
-          p_user_id: string
           p_action: string
-          p_resource_type?: string
-          p_resource_id?: string
           p_ip_address?: unknown
-          p_user_agent?: string
           p_metadata?: Json
+          p_resource_id?: string
+          p_resource_type?: string
           p_risk_level?: string
+          p_user_agent?: string
+          p_user_id: string
         }
         Returns: string
       }
@@ -3248,11 +3248,11 @@ export type Database = {
       }
       update_user_analytics: {
         Args: {
-          p_user_id: string
-          p_time_studied?: number
           p_assessment_completed?: boolean
           p_score?: number
+          p_time_studied?: number
           p_topics?: string[]
+          p_user_id: string
         }
         Returns: undefined
       }
