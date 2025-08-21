@@ -156,28 +156,40 @@ const ClientOnboarding = () => {
     setIsSubmitting(true);
 
     try {
+      console.log('Submitting inquiry...', formData);
+      
       const inquiryData = {
         user_id: user?.id || null,
         name: formData.name,
         email: formData.email,
-        company_name: formData.company_name,
-        phone: formData.phone,
-        inquiry_type: formData.inquiry_type,
+        company_name: formData.company_name || null,
+        phone: formData.phone || null,
+        inquiry_type: formData.inquiry_type || null,
         subject: formData.subject,
         message: `${formData.message}\n\nProject Details:\n- Scope: ${formData.project_scope}\n- Budget: ${formData.budget_range}\n- Timeline: ${formData.timeline}\n- Additional Services: ${formData.additional_services.join(', ')}\n- Preferred Contact: ${formData.preferred_contact_method}`,
-        priority: formData.urgency,
+        priority: formData.urgency || 'medium',
         status: 'new'
       };
 
+      console.log('Inserting inquiry into database...', inquiryData);
+      
       // Save to database
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('client_inquiries')
-        .insert([inquiryData]);
+        .insert([inquiryData])
+        .select()
+        .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database error:', error);
+        throw error;
+      }
+
+      console.log('Inquiry saved successfully:', data);
 
       // Send email notification
       try {
+        console.log('Sending email notification...');
         const emailData = {
           fullName: formData.name,
           email: formData.email,
@@ -190,9 +202,15 @@ const ClientOnboarding = () => {
           urgency: formData.urgency
         };
 
-        await supabase.functions.invoke('send-inquiry-email', {
+        const { data: emailResponse, error: emailError } = await supabase.functions.invoke('send-inquiry-email', {
           body: emailData
         });
+
+        if (emailError) {
+          console.error('Email error:', emailError);
+        } else {
+          console.log('Email sent successfully:', emailResponse);
+        }
       } catch (emailError) {
         console.error('Email sending failed:', emailError);
         // Don't fail the whole submission if email fails
@@ -207,7 +225,7 @@ const ClientOnboarding = () => {
       console.error('Error submitting inquiry:', error);
       toast({
         title: "Submission Failed",
-        description: "Please try again or contact us directly.",
+        description: `Error: ${error?.message || 'Please try again or contact us directly.'}`,
         variant: "destructive"
       });
     } finally {
