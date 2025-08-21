@@ -22,6 +22,19 @@ import HanuPartnerships from "./pages/HanuPartnerships";
 import HanuSolutions from "./pages/HanuSolutions";
 import ClientOnboarding from "./pages/ClientOnboarding";
 
+// Talent subpages
+import TalentDirectory from "./pages/talent/TalentDirectory";
+import TalentCalendar from "./pages/talent/TalentCalendar";
+
+// Academy subpages
+import AcademyCatalog from "./pages/academy/AcademyCatalog";
+
+// Solutions subpages
+import SolutionsCatalog from "./pages/solutions/SolutionsCatalog";
+
+// Partnerships subpages
+import PartnershipsDirectory from "./pages/partnerships/PartnershipsDirectory";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -47,6 +60,20 @@ const App = () => (
             <Route path="/hanu-partnerships" element={<HanuPartnerships />} />
             <Route path="/hanu-solutions" element={<HanuSolutions />} />
             <Route path="/client-onboarding" element={<ClientOnboarding />} />
+            
+            {/* Talent subpages */}
+            <Route path="/talent/directory" element={<TalentDirectory />} />
+            <Route path="/talent/calendar" element={<TalentCalendar />} />
+            
+            {/* Academy subpages */}
+            <Route path="/academy/catalog" element={<AcademyCatalog />} />
+            
+            {/* Solutions subpages */}
+            <Route path="/solutions/catalog" element={<SolutionsCatalog />} />
+            
+            {/* Partnerships subpages */}
+            <Route path="/partnerships/directory" element={<PartnershipsDirectory />} />
+            
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
