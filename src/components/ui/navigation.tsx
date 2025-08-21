@@ -18,11 +18,11 @@ interface NavigationProps {
 }
 
 const navigationItems = [
-  { id: 'clients', label: 'HANU Clients', href: '#clients' },
-  { id: 'talent', label: 'HANU Talent', href: '#talent' },
-  { id: 'academy', label: 'HANU AI Academy', href: '#academy' },
-  { id: 'partnerships', label: 'HANU Partnerships', href: '#partnerships' },
-  { id: 'solutions', label: 'HANU Solutions', href: '#solutions' }
+  { id: 'clients', label: 'HANU Clients', href: '/client-onboarding' },
+  { id: 'talent', label: 'HANU Talent', href: '/hanu-talent' },
+  { id: 'academy', label: 'HANU AI Academy', href: '/hanu-academy' },
+  { id: 'partnerships', label: 'HANU Partnerships', href: '/hanu-partnerships' },
+  { id: 'solutions', label: 'HANU Solutions', href: '/hanu-solutions' }
 ];
 
 export function Navigation({ className }: NavigationProps) {
@@ -84,13 +84,13 @@ export function Navigation({ className }: NavigationProps) {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             {navigationItems.map((item) => (
-              <a
+              <Link
                 key={item.id}
-                href={item.href}
+                to={item.href}
                 className="text-sm font-medium tracking-wider uppercase text-foreground/80 hover:text-primary transition-colors duration-300 border-b-2 border-transparent hover:border-primary/50"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </div>
 

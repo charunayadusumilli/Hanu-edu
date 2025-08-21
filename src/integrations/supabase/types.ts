@@ -14,6 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
+      academy_courses: {
+        Row: {
+          category: string
+          created_at: string
+          curriculum: Json | null
+          description: string | null
+          difficulty_level: string | null
+          duration_hours: number | null
+          id: string
+          instructor_id: string | null
+          is_published: boolean | null
+          learning_outcomes: string[] | null
+          prerequisites: string[] | null
+          price: number | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          curriculum?: Json | null
+          description?: string | null
+          difficulty_level?: string | null
+          duration_hours?: number | null
+          id?: string
+          instructor_id?: string | null
+          is_published?: boolean | null
+          learning_outcomes?: string[] | null
+          prerequisites?: string[] | null
+          price?: number | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          curriculum?: Json | null
+          description?: string | null
+          difficulty_level?: string | null
+          duration_hours?: number | null
+          id?: string
+          instructor_id?: string | null
+          is_published?: boolean | null
+          learning_outcomes?: string[] | null
+          prerequisites?: string[] | null
+          price?: number | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      academy_enrollments: {
+        Row: {
+          certificate_issued: boolean | null
+          completion_date: string | null
+          course_id: string
+          enrolled_at: string
+          id: string
+          progress_percentage: number | null
+          user_id: string
+        }
+        Insert: {
+          certificate_issued?: boolean | null
+          completion_date?: string | null
+          course_id: string
+          enrolled_at?: string
+          id?: string
+          progress_percentage?: number | null
+          user_id: string
+        }
+        Update: {
+          certificate_issued?: boolean | null
+          completion_date?: string | null
+          course_id?: string
+          enrolled_at?: string
+          id?: string
+          progress_percentage?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academy_enrollments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "academy_courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       admin_audit_logs: {
         Row: {
           action: string
@@ -528,6 +620,69 @@ export type Database = {
           timeline?: string | null
           updated_at?: string
           urgency?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      client_inquiries: {
+        Row: {
+          assigned_to: string | null
+          company_name: string | null
+          created_at: string
+          email: string
+          follow_up_date: string | null
+          follow_up_required: boolean | null
+          id: string
+          inquiry_type: string | null
+          message: string
+          name: string
+          phone: string | null
+          priority: string | null
+          resolution_notes: string | null
+          response_due_date: string | null
+          status: string | null
+          subject: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          company_name?: string | null
+          created_at?: string
+          email: string
+          follow_up_date?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          inquiry_type?: string | null
+          message: string
+          name: string
+          phone?: string | null
+          priority?: string | null
+          resolution_notes?: string | null
+          response_due_date?: string | null
+          status?: string | null
+          subject: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string
+          follow_up_date?: string | null
+          follow_up_required?: boolean | null
+          id?: string
+          inquiry_type?: string | null
+          message?: string
+          name?: string
+          phone?: string | null
+          priority?: string | null
+          resolution_notes?: string | null
+          response_due_date?: string | null
+          status?: string | null
+          subject?: string
+          updated_at?: string
           user_id?: string | null
         }
         Relationships: []
@@ -2180,6 +2335,128 @@ export type Database = {
         }
         Relationships: []
       }
+      partnership_collaborations: {
+        Row: {
+          budget_allocated: number | null
+          budget_used: number | null
+          created_at: string
+          deliverables: Json | null
+          description: string | null
+          end_date: string | null
+          hanu_lead_id: string | null
+          id: string
+          partner_lead_contact: string | null
+          partnership_id: string
+          project_name: string
+          start_date: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          budget_allocated?: number | null
+          budget_used?: number | null
+          created_at?: string
+          deliverables?: Json | null
+          description?: string | null
+          end_date?: string | null
+          hanu_lead_id?: string | null
+          id?: string
+          partner_lead_contact?: string | null
+          partnership_id: string
+          project_name: string
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          budget_allocated?: number | null
+          budget_used?: number | null
+          created_at?: string
+          deliverables?: Json | null
+          description?: string | null
+          end_date?: string | null
+          hanu_lead_id?: string | null
+          id?: string
+          partner_lead_contact?: string | null
+          partnership_id?: string
+          project_name?: string
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partnership_collaborations_partnership_id_fkey"
+            columns: ["partnership_id"]
+            isOneToOne: false
+            referencedRelation: "partnership_organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partnership_organizations: {
+        Row: {
+          benefits: Json | null
+          contact_email: string | null
+          contact_person: string | null
+          contact_phone: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          industry: string | null
+          name: string
+          partnership_level: string | null
+          services_offered: string[] | null
+          start_date: string | null
+          status: string | null
+          type: string | null
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          benefits?: Json | null
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          industry?: string | null
+          name: string
+          partnership_level?: string | null
+          services_offered?: string[] | null
+          start_date?: string | null
+          status?: string | null
+          type?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          benefits?: Json | null
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          industry?: string | null
+          name?: string
+          partnership_level?: string | null
+          services_offered?: string[] | null
+          start_date?: string | null
+          status?: string | null
+          type?: string | null
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       phone_verifications: {
         Row: {
           created_at: string | null
@@ -2536,6 +2813,131 @@ export type Database = {
         }
         Relationships: []
       }
+      solution_products: {
+        Row: {
+          api_documentation_url: string | null
+          base_price: number | null
+          billing_cycle: string | null
+          category: string | null
+          created_at: string
+          currency: string | null
+          demo_available: boolean | null
+          demo_url: string | null
+          description: string | null
+          documentation_url: string | null
+          features: Json | null
+          id: string
+          is_active: boolean | null
+          is_featured: boolean | null
+          long_description: string | null
+          name: string
+          pricing_model: string | null
+          support_level: string | null
+          updated_at: string
+        }
+        Insert: {
+          api_documentation_url?: string | null
+          base_price?: number | null
+          billing_cycle?: string | null
+          category?: string | null
+          created_at?: string
+          currency?: string | null
+          demo_available?: boolean | null
+          demo_url?: string | null
+          description?: string | null
+          documentation_url?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          long_description?: string | null
+          name: string
+          pricing_model?: string | null
+          support_level?: string | null
+          updated_at?: string
+        }
+        Update: {
+          api_documentation_url?: string | null
+          base_price?: number | null
+          billing_cycle?: string | null
+          category?: string | null
+          created_at?: string
+          currency?: string | null
+          demo_available?: boolean | null
+          demo_url?: string | null
+          description?: string | null
+          documentation_url?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          long_description?: string | null
+          name?: string
+          pricing_model?: string | null
+          support_level?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      solution_subscriptions: {
+        Row: {
+          amount: number
+          billing_cycle: string | null
+          cancelled_at: string | null
+          created_at: string
+          currency: string | null
+          id: string
+          next_billing_date: string | null
+          product_id: string
+          started_at: string
+          status: string | null
+          subscription_tier: string | null
+          trial_end_date: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          billing_cycle?: string | null
+          cancelled_at?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          next_billing_date?: string | null
+          product_id: string
+          started_at?: string
+          status?: string | null
+          subscription_tier?: string | null
+          trial_end_date?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          billing_cycle?: string | null
+          cancelled_at?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          next_billing_date?: string | null
+          product_id?: string
+          started_at?: string
+          status?: string | null
+          subscription_tier?: string | null
+          trial_end_date?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "solution_subscriptions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "solution_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       study_group_members: {
         Row: {
           group_id: string
@@ -2628,6 +3030,66 @@ export type Database = {
           subscription_tier?: string | null
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      talent_profiles: {
+        Row: {
+          benefits: Json | null
+          certifications: Json | null
+          created_at: string
+          department: string | null
+          emergency_contact: Json | null
+          employee_id: string | null
+          hire_date: string | null
+          id: string
+          manager_id: string | null
+          performance_metrics: Json | null
+          position: string | null
+          salary_range: string | null
+          skills: string[] | null
+          updated_at: string
+          user_id: string
+          vacation_days_total: number | null
+          vacation_days_used: number | null
+        }
+        Insert: {
+          benefits?: Json | null
+          certifications?: Json | null
+          created_at?: string
+          department?: string | null
+          emergency_contact?: Json | null
+          employee_id?: string | null
+          hire_date?: string | null
+          id?: string
+          manager_id?: string | null
+          performance_metrics?: Json | null
+          position?: string | null
+          salary_range?: string | null
+          skills?: string[] | null
+          updated_at?: string
+          user_id: string
+          vacation_days_total?: number | null
+          vacation_days_used?: number | null
+        }
+        Update: {
+          benefits?: Json | null
+          certifications?: Json | null
+          created_at?: string
+          department?: string | null
+          emergency_contact?: Json | null
+          employee_id?: string | null
+          hire_date?: string | null
+          id?: string
+          manager_id?: string | null
+          performance_metrics?: Json | null
+          position?: string | null
+          salary_range?: string | null
+          skills?: string[] | null
+          updated_at?: string
+          user_id?: string
+          vacation_days_total?: number | null
+          vacation_days_used?: number | null
         }
         Relationships: []
       }

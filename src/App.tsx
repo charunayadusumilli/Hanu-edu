@@ -16,6 +16,11 @@ import SolutionsAndCases from "./pages/SolutionsAndCases";
 import ProjectTracker from "./pages/ProjectTracker";
 import DomainTest from "./pages/DomainTest";
 import NotFound from "./pages/NotFound";
+import HanuTalent from "./pages/HanuTalent";
+import HanuAcademy from "./pages/HanuAcademy";
+import HanuPartnerships from "./pages/HanuPartnerships";
+import HanuSolutions from "./pages/HanuSolutions";
+import ClientOnboarding from "./pages/ClientOnboarding";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +42,11 @@ const App = () => (
             <Route path="/talent" element={<ProtectedRoute><TalentHub /></ProtectedRoute>} />
             <Route path="/projects" element={<ProtectedRoute><ProjectTracker /></ProtectedRoute>} />
             <Route path="/domain-test" element={<DomainTest />} />
+            <Route path="/hanu-talent" element={<HanuTalent />} />
+            <Route path="/hanu-academy" element={<HanuAcademy />} />
+            <Route path="/hanu-partnerships" element={<HanuPartnerships />} />
+            <Route path="/hanu-solutions" element={<HanuSolutions />} />
+            <Route path="/client-onboarding" element={<ClientOnboarding />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
