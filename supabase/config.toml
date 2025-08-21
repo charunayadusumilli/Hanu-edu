@@ -1,4 +1,7 @@
-project_id = "dahqblnyckleyoaodnbl"
+project_id = "cscemxwbqxbgdapzdtbb"
 
 [functions.send-welcome-email]
+verify_jwt = false
+
+[functions.send-inquiry-email]
 verify_jwt = false
