@@ -169,11 +169,34 @@ const ClientOnboarding = () => {
         status: 'new'
       };
 
+      // Save to database
       const { error } = await supabase
         .from('client_inquiries')
         .insert([inquiryData]);
 
       if (error) throw error;
+
+      // Send email notification
+      try {
+        const emailData = {
+          fullName: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          companyName: formData.company_name,
+          inquiryType: formData.inquiry_type,
+          message: formData.message,
+          budget: formData.budget_range,
+          timeline: formData.timeline,
+          urgency: formData.urgency
+        };
+
+        await supabase.functions.invoke('send-inquiry-email', {
+          body: emailData
+        });
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+        // Don't fail the whole submission if email fails
+      }
 
       setCurrentStep(5); // Success step
       toast({
