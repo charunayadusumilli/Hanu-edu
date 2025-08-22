@@ -15,6 +15,7 @@ import ExpertsDirectory from "./pages/ExpertsDirectory";
 import SolutionsAndCases from "./pages/SolutionsAndCases";
 import ProjectTracker from "./pages/ProjectTracker";
 import DomainTest from "./pages/DomainTest";
+import DomainDiagnostics from "./pages/DomainDiagnostics";
 import NotFound from "./pages/NotFound";
 import HanuTalent from "./pages/HanuTalent";
 import HanuAcademy from "./pages/HanuAcademy";
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="/talent" element={<ProtectedRoute><TalentHub /></ProtectedRoute>} />
             <Route path="/projects" element={<ProtectedRoute><ProjectTracker /></ProtectedRoute>} />
             <Route path="/domain-test" element={<DomainTest />} />
+            <Route path="/domain-diagnostics" element={<DomainDiagnostics />} />
             <Route path="/hanu-talent" element={<HanuTalent />} />
             <Route path="/hanu-academy" element={<HanuAcademy />} />
             <Route path="/hanu-partnerships" element={<HanuPartnerships />} />

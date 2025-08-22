@@ -85,13 +85,17 @@ export function FooterSection() {
         <Separator className="my-8" />
 
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <div>
-            © 2024 Hanu Consulting. All rights reserved.
+          <div className="flex flex-col md:flex-row md:items-center gap-2">
+            <div>© 2024 Hanu Consulting. All rights reserved.</div>
+            <div className="text-xs opacity-70">
+              Build: {new Date().toISOString().split('T')[0]}-{Math.floor(Date.now() / 1000).toString(36)}
+            </div>
           </div>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="#" className="hover:text-primary transition-colors">Privacy Policy</Link>
             <Link to="#" className="hover:text-primary transition-colors">Terms of Service</Link>
             <Link to="#" className="hover:text-primary transition-colors">Cookie Policy</Link>
+            <Link to="/domain-diagnostics" className="hover:text-primary transition-colors">Domain Status</Link>
           </div>
         </div>
       </div>
