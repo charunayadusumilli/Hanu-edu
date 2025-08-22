@@ -101,7 +101,7 @@ export const useScrollAnimation = () => {
         }
       };
       
-      // Section-to-Section Visual Bridges
+      // Section-to-Section Visual Bridges (Subtle)
       const initSectionBridges = () => {
         const sectionPairs = [
           { from: 'clients', to: 'talent' },
@@ -123,37 +123,19 @@ export const useScrollAnimation = () => {
               onUpdate: (self) => {
                 const progress = self.progress;
                 
-                // From section morphing out
-                gsap.set(fromSection, {
-                  scale: 1 + (progress * 0.2),
-                  rotationY: progress * 15,
-                  opacity: 1 - (progress * 0.3),
-                  z: progress * -150,
-                  filter: `blur(${progress * 8}px)`
-                });
-                
-                // To section morphing in
-                gsap.set(toSection, {
-                  scale: 1.1 - (progress * 0.1),
-                  rotationY: (1 - progress) * -15,
-                  opacity: 0.7 + (progress * 0.3),
-                  z: (1 - progress) * 150,
-                  filter: `blur(${(1 - progress) * 8}px)`
-                });
-                
-                // Background color transition
+                // Subtle background transitions only
                 const fromBg = fromSection.querySelector('[style*="backgroundImage"]');
                 const toBg = toSection.querySelector('[style*="backgroundImage"]');
                 
                 if (fromBg && toBg) {
                   gsap.set(fromBg, {
-                    opacity: 1 - (progress * 0.4),
-                    scale: 1.1 + (progress * 0.1)
+                    opacity: 1 - (progress * 0.2),
+                    scale: 1 + (progress * 0.02)
                   });
                   
                   gsap.set(toBg, {
                     opacity: 0.8 + (progress * 0.2),
-                    scale: 1.2 - (progress * 0.1)
+                    scale: 1.02 - (progress * 0.02)
                   });
                 }
               }
@@ -162,23 +144,23 @@ export const useScrollAnimation = () => {
         });
       };
       
-      // Multi-Layer Parallax System
+      // Multi-Layer Parallax System (Subtle)
       const initAdvancedParallax = () => {
-        sections.forEach((section, index) => {
+        // Only apply to sections with parallax-bg class
+        const parallaxSections = document.querySelectorAll('.parallax-bg');
+        
+        parallaxSections.forEach((section, index) => {
           const bgElement = section.querySelector('[style*="backgroundImage"]');
           const overlay = section.querySelector('.absolute.inset-0:nth-child(2)');
-          const content = section.querySelector('.relative.z-10');
           
           if (bgElement) {
-            // Background layer - slowest movement
+            // Subtle background parallax only
             gsap.fromTo(bgElement, {
-              yPercent: -20,
-              scale: 1.3,
-              rotationY: -5
+              yPercent: -5,
+              scale: 1.05
             }, {
-              yPercent: 20,
-              scale: 1.1,
-              rotationY: 5,
+              yPercent: 5,
+              scale: 1,
               ease: "none",
               scrollTrigger: {
                 trigger: section,
@@ -187,35 +169,14 @@ export const useScrollAnimation = () => {
                 scrub: 1.5
               }
             });
-            
-            // Advanced 3D transformation
-            ScrollTrigger.create({
-              trigger: section,
-              start: "top center",
-              end: "bottom center",
-              scrub: 1,
-              onUpdate: (self) => {
-                const progress = self.progress;
-                const rotation = (progress - 0.5) * 10;
-                
-                gsap.set(bgElement, {
-                  rotationX: rotation,
-                  rotationZ: rotation * 0.3,
-                  transformOrigin: "center center",
-                  filter: `brightness(${0.8 + progress * 0.4}) saturate(${0.9 + progress * 0.2})`
-                });
-              }
-            });
           }
           
           if (overlay) {
-            // Overlay layer - medium movement
+            // Subtle overlay changes
             gsap.fromTo(overlay, {
-              yPercent: -10,
-              opacity: 0.5
+              opacity: 0.6
             }, {
-              yPercent: 10,
-              opacity: 0.9,
+              opacity: 0.8,
               ease: "none",
               scrollTrigger: {
                 trigger: section,
@@ -225,143 +186,83 @@ export const useScrollAnimation = () => {
               }
             });
           }
-          
-          if (content) {
-            // Content layer - fastest movement with 3D effects
-            gsap.fromTo(content, {
-              yPercent: 5,
-              scale: 0.95,
-              rotationY: 2
-            }, {
-              yPercent: -5,
-              scale: 1.05,
-              rotationY: -2,
-              ease: "none",
-              scrollTrigger: {
-                trigger: section,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 0.5
-              }
-            });
-          }
         });
       };
       
-      // Cinematic Section Reveals
+      // Cinematic Section Reveals (Calmer)
       const initCinematicReveals = () => {
         sections.forEach((section, index) => {
-          const content = section.querySelector('.max-w-4xl');
           const heading = section.querySelector('h1, h2');
           const subtext = section.querySelector('p');
           
-          // Staggered reveal animation
+          // Simple reveal animation
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: section,
-              start: "top 70%",
+              start: "top 80%",
               end: "bottom 30%",
               toggleActions: "play none none reverse"
             }
           });
           
-          // Section entrance
-          tl.fromTo(section, {
-            opacity: 0,
-            scale: 0.9,
-            rotationY: 10,
-            z: -100
-          }, {
-            opacity: 1,
-            scale: 1,
-            rotationY: 0,
-            z: 0,
-            duration: 2,
-            ease: "power4.out"
-          });
-          
-          // Heading reveal
+          // Heading reveal - simpler
           if (heading) {
             tl.fromTo(heading, {
               opacity: 0,
-              y: 100,
-              scale: 0.8,
-              rotationX: 30
+              y: 30
             }, {
               opacity: 1,
               y: 0,
-              scale: 1,
-              rotationX: 0,
-              duration: 1.5,
-              ease: "back.out(1.7)"
-            }, "-=1.5");
+              duration: 1,
+              ease: "power2.out"
+            });
           }
           
-          // Subtext reveal
+          // Subtext reveal - simpler
           if (subtext) {
             tl.fromTo(subtext, {
               opacity: 0,
-              y: 50,
-              scale: 0.9
+              y: 20
             }, {
               opacity: 1,
               y: 0,
-              scale: 1,
-              duration: 1.2,
-              ease: "power3.out"
-            }, "-=1");
+              duration: 0.8,
+              ease: "power2.out"
+            }, "-=0.5");
           }
         });
       };
       
-      // Atmospheric Effects System
+      // Atmospheric Effects System (Minimal)
       const initAtmosphericEffects = () => {
-        // Create floating particles that bridge sections
-        sections.forEach((section, index) => {
-          const particleCount = 20;
+        // Reduce particle count and intensity
+        const parallaxSections = document.querySelectorAll('.parallax-bg');
+        
+        parallaxSections.forEach((section, index) => {
+          const particleCount = 5; // Reduced from 20
           const particles = [];
           
           for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
-            particle.className = 'absolute w-1 h-1 bg-primary/20 rounded-full pointer-events-none';
+            particle.className = 'absolute w-0.5 h-0.5 bg-primary/10 rounded-full pointer-events-none';
             particle.style.left = `${Math.random() * 100}%`;
             particle.style.top = `${Math.random() * 100}%`;
             section.appendChild(particle);
             particles.push(particle);
             
-            // Animate particles
+            // Gentle particle animation
             gsap.to(particle, {
-              x: `${Math.random() * 200 - 100}px`,
-              y: `${Math.random() * 200 - 100}px`,
-              opacity: Math.random() * 0.8,
-              scale: Math.random() * 2 + 0.5,
-              duration: Math.random() * 10 + 5,
+              x: `${Math.random() * 50 - 25}px`,
+              y: `${Math.random() * 50 - 25}px`,
+              opacity: Math.random() * 0.3,
+              scale: Math.random() * 1.5 + 0.5,
+              duration: Math.random() * 20 + 10,
               ease: "none",
               repeat: -1,
               yoyo: true,
-              delay: Math.random() * 2
+              delay: Math.random() * 5
             });
           }
-          
-          // Section-based particle behavior
-          ScrollTrigger.create({
-            trigger: section,
-            start: "top center",
-            end: "bottom center",
-            scrub: 1,
-            onUpdate: (self) => {
-              const progress = self.progress;
-              
-              particles.forEach((particle, i) => {
-                const intensity = Math.sin(progress * Math.PI);
-                gsap.set(particle, {
-                  opacity: intensity * 0.6,
-                  scale: 0.5 + intensity * 1.5,
-                  rotationZ: progress * 360 * (i % 2 === 0 ? 1 : -1)
-                });
-              });
-            }
-          });
         });
       };
       

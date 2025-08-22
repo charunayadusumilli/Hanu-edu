@@ -7,7 +7,7 @@ export const SolutionsSection = () => {
     <section id="solutions" className="min-h-screen relative overflow-hidden parallax-bg">
       {/* Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 transform-gpu will-change-transform"
         style={{
           backgroundImage: `url(${solutionsIndustrialAi})`,
         }}

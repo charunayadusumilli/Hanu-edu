@@ -8,7 +8,7 @@ export const ClientsSection = () => {
       {/* Background Image */}
       <div 
         id="clients-bg"
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 transition-all duration-1000"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 transition-all duration-1000 transform-gpu will-change-transform"
         style={{
           backgroundImage: `url(${clientsGlobalNetwork})`,
         }}
