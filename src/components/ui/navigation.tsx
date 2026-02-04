@@ -18,19 +18,14 @@ interface NavigationProps {
 }
 
 const navigationItems = [
-  { id: 'clients', label: 'HANU Clients', href: '/client-onboarding' },
-  { id: 'talent', label: 'HANU Talent', href: '/hanu-talent' },
-  { id: 'academy', label: 'HANU AI Academy', href: '/hanu-academy' },
-  { id: 'partnerships', label: 'HANU Partnerships', href: '/hanu-partnerships' },
-  { id: 'solutions', label: 'HANU Solutions', href: '/hanu-solutions' }
+  { id: 'courses', label: 'Explore Courses', href: '/academy/catalog' },
+  { id: 'community', label: 'Join Community', href: '/auth?mode=signup' },
 ];
 
 export function Navigation({ className }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeTab, setActiveTab] = useState('clients');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hoveredTab, setHoveredTab] = useState<string | null>(null);
-  
+
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -54,40 +49,29 @@ export function Navigation({ className }: NavigationProps) {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        isScrolled 
-          ? "glass-strong shadow-lg" 
-          : "bg-transparent",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        isScrolled
+          ? "bg-white/95 backdrop-blur-md shadow-sm py-4"
+          : "bg-transparent py-6",
         className
       )}
     >
-      <nav className="container mx-auto px-6 py-4">
+      <nav className="container mx-auto px-6">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center space-x-3"
-            >
-              <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center glow">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-space-grotesk font-bold text-gradient-primary tracking-[0.2em]">
-                  HANU
-                </h1>
-                <p className="text-xs text-muted-foreground">AI-Powered Solutions</p>
-              </div>
-            </motion.div>
+          {/* Logo matching Hanu UI */}
+          <Link to="/" className="flex items-center">
+            <h1 className="text-2xl font-black text-slate-900 tracking-tighter">
+              HANU<span className="text-primary italic">.EDU</span>
+            </h1>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-10">
             {navigationItems.map((item) => (
               <Link
                 key={item.id}
                 to={item.href}
-                className="text-sm font-medium tracking-wider uppercase text-foreground/80 hover:text-primary transition-colors duration-300 border-b-2 border-transparent hover:border-primary/50"
+                className="text-sm font-bold uppercase tracking-widest text-slate-500 hover:text-primary transition-colors duration-200"
               >
                 {item.label}
               </Link>
@@ -95,22 +79,22 @@ export function Navigation({ className }: NavigationProps) {
           </div>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                    <User className="h-5 w-5" />
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full border border-slate-100">
+                    <User className="h-5 w-5 text-slate-600" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                   <div className="flex flex-col space-y-1 p-2">
-                    <p className="text-sm font-medium leading-none">{user.user_metadata?.full_name || user.email}</p>
-                    <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                    <p className="text-sm font-bold leading-none">{user.user_metadata?.full_name || user.email}</p>
+                    <p className="text-xs leading-none text-slate-400">{user.email}</p>
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate('/dashboard')}>
-                    Dashboard
+                    Student Panel
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
@@ -121,11 +105,11 @@ export function Navigation({ className }: NavigationProps) {
               </DropdownMenu>
             ) : (
               <>
-                <Button variant="outline" className="animated-border" asChild>
-                  <Link to="/auth">Sign In</Link>
-                </Button>
-                <Button className="bg-gradient-primary hover:opacity-90 shadow-glow" asChild>
-                  <Link to="/auth">Get Started</Link>
+                <Link to="/auth" className="text-sm font-bold uppercase tracking-widest text-slate-900 hover:text-primary transition-colors">
+                  Log In
+                </Link>
+                <Button className="bg-primary hover:bg-primary-dark text-white font-bold h-12 px-8 rounded-full shadow-lg shadow-primary/20 transition-all" asChild>
+                  <Link to="/auth">Enroll Now</Link>
                 </Button>
               </>
             )}
@@ -172,42 +156,43 @@ export function Navigation({ className }: NavigationProps) {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden mt-6 glass-strong rounded-xl border border-primary/20 overflow-hidden"
+              className="lg:hidden mt-4 bg-white rounded-2xl border border-slate-100 shadow-xl overflow-hidden"
             >
               <div className="p-6 space-y-4">
                 {navigationItems.map((item) => (
-                  <a
+                  <Link
                     key={item.id}
-                    href={item.href}
-                    className="block py-3 text-sm font-medium tracking-wider uppercase text-foreground/80 hover:text-primary transition-colors border-b border-border/10 last:border-b-0"
+                    to={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block py-5 text-sm font-bold uppercase tracking-[0.2em] text-slate-500 hover:text-primary transition-colors border-b border-slate-50 last:border-b-0"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
-                <div className="pt-4 border-t border-border space-y-2">
+                <div className="pt-4 space-y-4">
                   {user ? (
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <div className="text-sm">
-                        <p className="font-medium">{user.user_metadata?.full_name || user.email}</p>
-                        <p className="text-muted-foreground">{user.email}</p>
+                        <p className="font-bold text-slate-900">{user.user_metadata?.full_name || user.email}</p>
+                        <p className="text-slate-400">{user.email}</p>
                       </div>
-                      <Button variant="outline" onClick={() => navigate('/dashboard')} className="w-full">
-                        Dashboard
+                      <Button variant="outline" onClick={() => { navigate('/dashboard'); setIsMenuOpen(false); }} className="w-full h-12 rounded-xl">
+                        Student Panel
                       </Button>
-                      <Button variant="outline" onClick={handleSignOut} className="w-full">
+                      <Button variant="ghost" onClick={handleSignOut} className="w-full text-red-500 hover:text-red-600 hover:bg-red-50">
                         <LogOut className="mr-2 h-4 w-4" />
                         Sign Out
                       </Button>
                     </div>
                   ) : (
-                    <>
-                      <Button variant="outline" className="w-full" asChild>
-                        <Link to="/auth">Sign In</Link>
+                    <div className="flex flex-col gap-3">
+                      <Button variant="outline" className="w-full h-12 rounded-xl border-slate-200" asChild onClick={() => setIsMenuOpen(false)}>
+                        <Link to="/auth">Log In</Link>
                       </Button>
-                      <Button className="w-full bg-gradient-primary" asChild>
-                        <Link to="/auth">Get Started</Link>
+                      <Button className="w-full h-12 rounded-xl bg-primary hover:bg-primary-dark shadow-lg shadow-primary/20" asChild onClick={() => setIsMenuOpen(false)}>
+                        <Link to="/auth">Enroll Now</Link>
                       </Button>
-                    </>
+                    </div>
                   )}
                 </div>
               </div>

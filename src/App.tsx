@@ -5,36 +5,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ui/protected-route";
-import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import AuthCallback from "./pages/AuthCallback";
 import Dashboard from "./pages/Dashboard";
-import ClientsHub from "./pages/ClientsHub";
-import TalentHub from "./pages/TalentHub";
-import ExpertsDirectory from "./pages/ExpertsDirectory";
-import SolutionsAndCases from "./pages/SolutionsAndCases";
-import ProjectTracker from "./pages/ProjectTracker";
-import DomainTest from "./pages/DomainTest";
-import DomainDiagnostics from "./pages/DomainDiagnostics";
-import NotFound from "./pages/NotFound";
-import HanuTalent from "./pages/HanuTalent";
-import HanuAcademy from "./pages/HanuAcademy";
-import HanuPartnerships from "./pages/HanuPartnerships";
-import HanuSolutions from "./pages/HanuSolutions";
-import ClientOnboarding from "./pages/ClientOnboarding";
-
-// Talent subpages
-import TalentDirectory from "./pages/talent/TalentDirectory";
-import TalentCalendar from "./pages/talent/TalentCalendar";
+import HanuEdu from "./pages/HanuEdu";
 
 // Academy subpages
 import AcademyCatalog from "./pages/academy/AcademyCatalog";
-
-// Solutions subpages
-import SolutionsCatalog from "./pages/solutions/SolutionsCatalog";
-
-// Partnerships subpages
-import PartnershipsDirectory from "./pages/partnerships/PartnershipsDirectory";
 
 const queryClient = new QueryClient();
 
@@ -46,38 +23,17 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<HanuEdu />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/experts" element={<ExpertsDirectory />} />
-            <Route path="/solutions" element={<SolutionsAndCases />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/clients" element={<ProtectedRoute><ClientsHub /></ProtectedRoute>} />
-            <Route path="/talent" element={<ProtectedRoute><TalentHub /></ProtectedRoute>} />
-            <Route path="/projects" element={<ProtectedRoute><ProjectTracker /></ProtectedRoute>} />
-            <Route path="/domain-test" element={<DomainTest />} />
-            <Route path="/domain-diagnostics" element={<DomainDiagnostics />} />
-            <Route path="/hanu-talent" element={<HanuTalent />} />
-            <Route path="/hanu-academy" element={<HanuAcademy />} />
-            <Route path="/hanu-partnerships" element={<HanuPartnerships />} />
-            <Route path="/hanu-solutions" element={<HanuSolutions />} />
-            <Route path="/client-onboarding" element={<ClientOnboarding />} />
-            
-            {/* Talent subpages */}
-            <Route path="/talent/directory" element={<TalentDirectory />} />
-            <Route path="/talent/calendar" element={<TalentCalendar />} />
-            
+
             {/* Academy subpages */}
             <Route path="/academy/catalog" element={<AcademyCatalog />} />
-            
-            {/* Solutions subpages */}
-            <Route path="/solutions/catalog" element={<SolutionsCatalog />} />
-            
-            {/* Partnerships subpages */}
-            <Route path="/partnerships/directory" element={<PartnershipsDirectory />} />
-            
+            <Route path="/hanu-edu" element={<HanuEdu />} />
+
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<HanuEdu />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

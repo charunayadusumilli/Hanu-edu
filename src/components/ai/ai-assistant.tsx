@@ -33,7 +33,7 @@ const predefinedMessages = [
   "How can AI transform my business operations?",
   "What consulting services do you offer?",
   "Tell me about your success stories",
-  "How do I get started with Hanu Consulting?",
+  "How do I get started with Hanu Edu?",
 ];
 
 const assistantResponses = {
@@ -178,7 +178,7 @@ export function AIAssistant({ variant = 'floating', className }: AIAssistantProp
                           "max-w-[80%] rounded-lg p-3",
                           message.type === 'user'
                             ? "bg-primary text-primary-foreground"
-                            : "bg-surface-elevated text-foreground"
+                            : "bg-white text-foreground"
                         )}>
                           <div className="flex items-start space-x-2">
                             {message.type === 'assistant' && (
@@ -217,7 +217,7 @@ export function AIAssistant({ variant = 'floating', className }: AIAssistantProp
                         animate={{ opacity: 1 }}
                         className="flex justify-start"
                       >
-                        <div className="bg-surface-elevated rounded-lg p-3">
+                        <div className="bg-white rounded-lg p-3">
                           <div className="flex items-center space-x-2">
                             <Sparkles className="w-4 h-4 text-primary animate-pulse" />
                             <div className="flex space-x-1">

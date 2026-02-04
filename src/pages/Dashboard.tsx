@@ -3,161 +3,160 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Bell, Calendar, FileText, Users, TrendingUp, Clock } from 'lucide-react';
+import { Bell, BookOpen, GraduationCap, Play, Star, Clock, Users } from 'lucide-react';
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-background pt-20">
-      <div className="container mx-auto px-6 py-8">
+    <div className="min-h-screen bg-slate-50 pt-20">
+      <div className="container mx-auto px-6 py-12">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
-            <h1 className="text-3xl font-space-grotesk font-bold text-gradient-primary">
-              Dashboard
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+              Student Panel
             </h1>
-            <p className="text-muted-foreground mt-2">
-              Welcome back! Here's what's happening with your projects.
+            <p className="text-slate-500 mt-2 font-medium">
+              Welcome back! You're 75% through your current course.
             </p>
           </div>
-          <Button className="bg-gradient-primary hover:opacity-90">
-            <Calendar className="w-4 h-4 mr-2" />
-            Schedule Meeting
+          <Button className="bg-primary hover:bg-primary-dark text-white font-bold h-12 px-8 rounded-xl shadow-lg shadow-primary/20">
+            <Play className="w-4 h-4 mr-2" />
+            Resume Last Lesson
           </Button>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="glass hover:shadow-glow transition-all duration-300">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <Card className="bg-white border-slate-100 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Projects</CardTitle>
-              <FileText className="h-4 w-4 text-accent-cyan" />
+              <CardTitle className="text-xs font-bold uppercase tracking-widest text-slate-400">Courses Enrolled</CardTitle>
+              <BookOpen className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12</div>
-              <p className="text-xs text-muted-foreground">
-                +2 from last month
+              <div className="text-3xl font-black text-slate-900">4</div>
+              <p className="text-xs text-slate-400 mt-1 font-medium">
+                2 in progress
               </p>
             </CardContent>
           </Card>
 
-          <Card className="glass hover:shadow-glow transition-all duration-300">
+          <Card className="bg-white border-slate-100 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Consultants</CardTitle>
-              <Users className="h-4 w-4 text-accent-purple" />
+              <CardTitle className="text-xs font-bold uppercase tracking-widest text-slate-400">Certificates Earned</CardTitle>
+              <GraduationCap className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">47</div>
-              <p className="text-xs text-muted-foreground">
-                +5 this quarter
+              <div className="text-3xl font-black text-slate-900">12</div>
+              <p className="text-xs text-slate-400 mt-1 font-medium">
+                Expert status
               </p>
             </CardContent>
           </Card>
 
-          <Card className="glass hover:shadow-glow transition-all duration-300">
+          <Card className="bg-white border-slate-100 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
-              <TrendingUp className="h-4 w-4 text-accent-green" />
+              <CardTitle className="text-xs font-bold uppercase tracking-widest text-slate-400">Learning Hours</CardTitle>
+              <Clock className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">94%</div>
-              <p className="text-xs text-muted-foreground">
-                +1.2% from last month
+              <div className="text-3xl font-black text-slate-900">124h</div>
+              <p className="text-xs text-slate-400 mt-1 font-medium">
+                Top 5% this month
               </p>
             </CardContent>
           </Card>
 
-          <Card className="glass hover:shadow-glow transition-all duration-300">
+          <Card className="bg-white border-slate-100 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg. Response</CardTitle>
-              <Clock className="h-4 w-4 text-accent-orange" />
+              <CardTitle className="text-xs font-bold uppercase tracking-widest text-slate-400">Avg. Score</CardTitle>
+              <Star className="h-4 w-4 text-yellow-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">2.4h</div>
-              <p className="text-xs text-muted-foreground">
-                -0.3h from last week
+              <div className="text-3xl font-black text-slate-900">4.8</div>
+              <p className="text-xs text-slate-400 mt-1 font-medium">
+                Outstanding performance
               </p>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Project Status */}
-          <Card className="lg:col-span-2 glass">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Active Courses */}
+          <Card className="lg:col-span-2 bg-white border-slate-100 shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-primary" />
-                Recent Projects
+              <CardTitle className="text-xl font-bold text-slate-900">
+                Continue Learning
               </CardTitle>
-              <CardDescription>
-                Your ongoing consulting engagements
+              <CardDescription className="font-medium">
+                Your recent active courses
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               {[
-                { name: 'Digital Transformation - TechCorp', status: 'In Progress', progress: 75, priority: 'High' },
-                { name: 'AI Strategy - StartupX', status: 'Planning', progress: 25, priority: 'Medium' },
-                { name: 'Process Optimization - MegaCorp', status: 'Review', progress: 90, priority: 'Low' }
-              ].map((project, index) => (
-                <div key={index} className="p-4 border border-border rounded-lg hover:bg-surface-hover transition-colors">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium">{project.name}</h4>
-                    <Badge variant={project.priority === 'High' ? 'destructive' : project.priority === 'Medium' ? 'default' : 'secondary'}>
-                      {project.priority}
+                { name: 'Generative AI for Business', status: 'Module 4: Prompt Engineering', progress: 75, priority: 'High Priority' },
+                { name: 'Deep Learning Mastery', status: 'Module 2: Neural Networks', progress: 25, priority: 'Technical' },
+                { name: 'Cloud Native AI Ops', status: 'Module 8: Final Project', progress: 90, priority: 'Exam Soon' }
+              ].map((course, index) => (
+                <div key={index} className="p-6 border border-slate-50 rounded-2xl hover:border-primary/20 hover:bg-slate-50 transition-all group">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="font-bold text-slate-900 group-hover:text-primary transition-colors">{course.name}</h4>
+                    <Badge variant="outline" className="border-slate-200 text-slate-500 font-bold text-xs uppercase tracking-wider">
+                      {course.priority}
                     </Badge>
                   </div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">{project.status}</span>
-                    <span className="text-sm font-medium">{project.progress}%</span>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-medium text-slate-500">{course.status}</span>
+                    <span className="text-sm font-bold text-slate-900">{course.progress}%</span>
                   </div>
-                  <Progress value={project.progress} className="h-2" />
+                  <Progress value={course.progress} className="h-2 bg-slate-100" />
                 </div>
               ))}
             </CardContent>
           </Card>
 
-          {/* Quick Actions & Notifications */}
-          <div className="space-y-6">
-            <Card className="glass">
+          {/* Up Next & Notifications */}
+          <div className="space-y-8">
+            <Card className="bg-white border-slate-100 shadow-sm">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-xl font-bold">
                   <Bell className="w-5 h-5 text-primary" />
                   Notifications
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-4">
                 {[
-                  { type: 'meeting', message: 'Meeting with TechCorp in 2 hours', time: '2h' },
-                  { type: 'document', message: 'New document shared by StartupX', time: '4h' },
-                  { type: 'task', message: 'Review proposal deadline tomorrow', time: '1d' }
+                  { type: 'live', message: 'Live Q&A starts in 30 mins', time: '30m' },
+                  { type: 'feedback', message: 'Assignment graded: Module 3', time: '4h' },
+                  { type: 'new', message: 'New course available: AI Security', time: '1d' }
                 ].map((notification, index) => (
-                  <div key={index} className="flex items-start gap-3 p-3 border border-border rounded-lg">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <div key={index} className="flex items-start gap-4 p-4 border border-slate-50 rounded-xl">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0 animate-pulse"></div>
                     <div className="flex-1">
-                      <p className="text-sm">{notification.message}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{notification.time} ago</p>
+                      <p className="text-sm font-bold text-slate-900">{notification.message}</p>
+                      <p className="text-xs text-slate-400 font-medium mt-1 uppercase tracking-wide">{notification.time} ago</p>
                     </div>
                   </div>
                 ))}
               </CardContent>
             </Card>
 
-            <Card className="glass">
+            <Card className="bg-slate-900 border-none shadow-xl">
               <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
+                <CardTitle className="text-white text-lg font-bold">Quick Links</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button className="w-full justify-start" variant="outline">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Submit New Challenge
+                <Button className="w-full justify-start bg-slate-800 hover:bg-slate-700 text-white border-none rounded-xl" variant="outline">
+                  <BookOpen className="w-4 h-4 mr-3" />
+                  Course Catalog
                 </Button>
-                <Button className="w-full justify-start" variant="outline">
-                  <Users className="w-4 h-4 mr-2" />
-                  Find Consultant
+                <Button className="w-full justify-start bg-slate-800 hover:bg-slate-700 text-white border-none rounded-xl" variant="outline">
+                  <GraduationCap className="w-4 h-4 mr-3" />
+                  My Certificates
                 </Button>
-                <Button className="w-full justify-start" variant="outline">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Schedule Meeting
+                <Button className="w-full justify-start bg-slate-800 hover:bg-slate-700 text-white border-none rounded-xl" variant="outline">
+                  <Users className="w-4 h-4 mr-3" />
+                  Community Forum
                 </Button>
               </CardContent>
             </Card>

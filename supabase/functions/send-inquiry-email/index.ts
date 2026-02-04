@@ -34,7 +34,7 @@ const handler = async (req: Request): Promise<Response> => {
     const emailHTML = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h1 style="color: #1f2937; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
-          New Client Inquiry - Hanu Consulting
+          New Client Inquiry - Hanu Edu
         </h1>
         
         <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -61,7 +61,7 @@ const handler = async (req: Request): Promise<Response> => {
         <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
         
         <p style="color: #6b7280; font-size: 14px;">
-          This inquiry was submitted through the Hanu Consulting website client onboarding form.
+          This inquiry was submitted through the Hanu Edu website client onboarding form.
           <br>
           Timestamp: ${new Date().toLocaleString()}
         </p>
@@ -69,7 +69,7 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     const emailResponse = await resend.emails.send({
-      from: "Hanu Consulting <noreply@hanu-consulting.com>",
+      from: "Hanu Edu <noreply@hanu-consulting.com>",
       to: ["contact@hanu-consulting.com"],
       subject: `New Client Inquiry: ${inquiryData.inquiryType} - ${inquiryData.fullName}`,
       html: emailHTML,

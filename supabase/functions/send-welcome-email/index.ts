@@ -34,16 +34,16 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`Sending welcome email to: ${email}`);
 
     const emailResponse = await resend.emails.send({
-      from: "Hanu Consulting <onboarding@resend.dev>",
+      from: "Hanu Edu <onboarding@resend.dev>",
       to: [email],
-      subject: "Welcome to Hanu Consulting - Your Setup Instructions",
+      subject: "Welcome to Hanu Edu - Your Setup Instructions",
       html: `
         <!DOCTYPE html>
         <html>
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Welcome to Hanu Consulting</title>
+            <title>Welcome to Hanu Edu</title>
             <style>
               body {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -138,10 +138,10 @@ const handler = async (req: Request): Promise<Response> => {
                 <div style="color: #6b7280; font-size: 16px;">AI-Powered Excellence</div>
               </div>
               
-              <h1 class="welcome-title">Welcome to Hanu Consulting!</h1>
+              <h1 class="welcome-title">Welcome to Hanu Edu!</h1>
               
               <div class="content">
-                <p>Thank you for your interest in Hanu Consulting. We're excited to have you join our community of forward-thinking professionals and businesses.</p>
+                <p>Thank you for your interest in Hanu Edu. We're excited to have you join our community of forward-thinking professionals and businesses.</p>
                 
                 <p>Your email has been successfully registered, and you're now one step closer to accessing our comprehensive suite of AI-powered consulting services.</p>
                 
@@ -183,9 +183,9 @@ const handler = async (req: Request): Promise<Response> => {
               </div>
               
               <div class="footer">
-                <p><strong>Hanu Consulting</strong></p>
+                <p><strong>Hanu Edu</strong></p>
                 <p>AI-Powered Excellence for Modern Businesses</p>
-                <p>This email was sent because you signed up for updates from Hanu Consulting.</p>
+                <p>This email was sent because you signed up for updates from Hanu Edu.</p>
               </div>
             </div>
           </body>

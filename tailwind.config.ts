@@ -28,72 +28,68 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
-				
-				surface: {
-					DEFAULT: 'hsl(var(--surface))',
-					elevated: 'hsl(var(--surface-elevated))',
-					hover: 'hsl(var(--surface-hover))',
-				},
-				
+
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					hover: 'hsl(var(--primary-hover))',
-					light: 'hsl(var(--primary-light))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: '#2563EB',
+					hover: '#1E40AF',
+					light: 'rgba(37, 99, 235, 0.1)',
+					foreground: '#FFFFFF'
 				},
-				
-				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))',
-					cyan: 'hsl(var(--accent-cyan))',
-					purple: 'hsl(var(--accent-purple))',
-					green: 'hsl(var(--accent-green))',
-					orange: 'hsl(var(--accent-orange))',
-				},
-				
+
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					DEFAULT: '#06B6D4',
+					foreground: '#FFFFFF'
 				},
-				
+
+				slate: {
+					50: '#F8FAFC',
+					100: '#F1F5F9',
+					200: '#E2E8F0',
+					400: '#94A3B8',
+					600: '#475569',
+					700: '#334155',
+					800: '#1E293B',
+					900: '#0F172A',
+				},
+
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
 				},
-				
+
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
-				
+
 				success: 'hsl(var(--success))',
 				warning: 'hsl(var(--warning))',
 				info: 'hsl(var(--info))',
-				
+
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
 				},
-				
+
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
 			},
-			
+
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-secondary': 'var(--gradient-secondary)',
 				'gradient-surface': 'var(--gradient-surface)',
 				'gradient-glow': 'var(--gradient-glow)',
 			},
-			
+
 			boxShadow: {
 				'glow': 'var(--shadow-glow)',
 				'glow-strong': 'var(--shadow-glow-strong)',
 				'glass': '0 8px 32px rgba(0, 0, 0, 0.1)',
 			},
-			
+
 			backdropBlur: {
 				'xs': '2px',
 			},
@@ -152,7 +148,7 @@ export default {
 					'100%': { backgroundPosition: '200% 0' }
 				}
 			},
-			
+
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
@@ -168,7 +164,7 @@ export default {
 				'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
 				'shimmer': 'shimmer 2s linear infinite'
 			},
-			
+
 			transitionTimingFunction: {
 				'bounce-in': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
 				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',

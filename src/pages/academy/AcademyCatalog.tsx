@@ -25,7 +25,7 @@ const AcademyCatalog = () => {
       rating: 4.8,
       price: 299,
       instructor: 'Dr. Sarah Chen',
-      thumbnail: '/api/placeholder/400/250',
+      thumbnail: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800',
       tags: ['Python', 'Scikit-learn', 'Data Science'],
       lessons: 24,
       isEnrolled: false
@@ -41,7 +41,7 @@ const AcademyCatalog = () => {
       rating: 4.9,
       price: 399,
       instructor: 'Marcus Johnson',
-      thumbnail: '/api/placeholder/400/250',
+      thumbnail: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&q=80&w=800',
       tags: ['React', 'JavaScript', 'Frontend'],
       lessons: 32,
       isEnrolled: true
@@ -57,7 +57,7 @@ const AcademyCatalog = () => {
       rating: 4.7,
       price: 199,
       instructor: 'Elena Rodriguez',
-      thumbnail: '/api/placeholder/400/250',
+      thumbnail: 'https://images.unsplash.com/photo-1586717791821-3f44a563cc4c?auto=format&fit=crop&q=80&w=800',
       tags: ['UX', 'Design Thinking', 'Figma'],
       lessons: 18,
       isEnrolled: false
@@ -73,7 +73,7 @@ const AcademyCatalog = () => {
       rating: 4.6,
       price: 449,
       instructor: 'David Kim',
-      thumbnail: '/api/placeholder/400/250',
+      thumbnail: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800',
       tags: ['AWS', 'Cloud', 'DevOps'],
       lessons: 28,
       isEnrolled: false
@@ -85,8 +85,8 @@ const AcademyCatalog = () => {
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         course.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         course.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+      course.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      course.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory = selectedCategory === 'all' || course.category === selectedCategory;
     const matchesLevel = selectedLevel === 'all' || course.level === selectedLevel;
     return matchesSearch && matchesCategory && matchesLevel;
@@ -95,7 +95,7 @@ const AcademyCatalog = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-border bg-surface/50 backdrop-blur-xl">
+      <div className="border-b border-border bg-white/50 backdrop-blur-xl">
         <div className="container mx-auto px-6 py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -104,7 +104,7 @@ const AcademyCatalog = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-4xl font-bold text-gradient-primary">Course Catalog</h1>
+                <h1 className="text-4xl font-bold text-primary">Course Catalog</h1>
                 <p className="text-muted-foreground">Discover and enroll in professional development courses</p>
               </div>
               <Button variant="outline" asChild>
@@ -165,11 +165,11 @@ const AcademyCatalog = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="overflow-hidden glass hover:glass-strong transition-all duration-300 group">
+              <Card className="overflow-hidden bg-white border border-slate-100 hover:bg-white border border-slate-100-strong transition-all duration-300 group">
                 {/* Course Thumbnail */}
                 <div className="relative h-48 bg-gradient-to-br from-primary/20 to-accent/20">
-                  <img 
-                    src={course.thumbnail} 
+                  <img
+                    src={course.thumbnail}
                     alt={course.title}
                     className="w-full h-full object-cover"
                   />
@@ -241,14 +241,6 @@ const AcademyCatalog = () => {
                     <div className="text-lg font-bold text-primary">
                       ${course.price}
                     </div>
-                    <Button 
-                      className={course.isEnrolled ? "bg-green-500" : "bg-gradient-primary"}
-                      asChild
-                    >
-                      <Link to={`/academy/course/${course.id}`}>
-                        {course.isEnrolled ? 'Continue Learning' : 'Enroll Now'}
-                      </Link>
-                    </Button>
                   </div>
                 </div>
               </Card>

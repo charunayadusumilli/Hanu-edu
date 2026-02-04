@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,18 @@ import { useToast } from '@/hooks/use-toast';
 import { Turnstile } from '@marsidev/react-turnstile';
 
 export default function Auth() {
-  const [mode, setMode] = useState('login');
+  const [searchParams] = useSearchParams();
+  const initialMode = searchParams.get('mode') === 'signup' ? 'signup' : 'login';
+  const [mode, setMode] = useState(initialMode);
+
+  // Update mode when URL changes
+  useEffect(() => {
+    const urlMode = searchParams.get('mode');
+    if (urlMode === 'signup' || urlMode === 'login') {
+      setMode(urlMode);
+    }
+  }, [searchParams]);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -34,28 +45,27 @@ export default function Auth() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
-    
+
     // Basic validation
     if (mode === 'signup' && !fullName.trim()) {
       setError('Full name is required for signup');
       return;
     }
-    
+
     if (password.length < 6) {
       setError('Password must be at least 6 characters long.');
       return;
     }
-    
+
     setLoading(true);
     setError('');
 
     try {
       if (mode === 'signup') {
-        // Temporarily disable CAPTCHA requirement for testing
-        const { error } = await signUp(email, password, fullName.trim(), captchaToken || 'bypass');
+        const { error } = await signUp(email, password, fullName.trim(), captchaToken);
         if (error) {
           console.error('Signup error:', error);
-          
+
           // Handle specific error cases
           if (error.message?.includes('User already registered')) {
             setError('An account with this email already exists. Please try signing in instead.');
@@ -80,7 +90,7 @@ export default function Auth() {
         const { error } = await signIn(email, password);
         if (error) {
           console.error('Login error:', error);
-          
+
           if (error.message?.includes('Invalid login credentials')) {
             setError('Invalid email or password. Please check your credentials and try again.');
           } else if (error.message?.includes('Email not confirmed')) {
@@ -136,7 +146,7 @@ export default function Auth() {
         <Card className="glass">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-gradient-primary">
-              Welcome to Hanu Consulting
+              Welcome to Hanu Edu
             </CardTitle>
             <CardDescription>
               {mode === 'login' ? 'Sign in to your account' : 'Create your account'}
@@ -148,7 +158,7 @@ export default function Auth() {
                 <TabsTrigger value="login">Sign In</TabsTrigger>
                 <TabsTrigger value="signup">Sign Up</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="login">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {error && (
@@ -156,7 +166,7 @@ export default function Auth() {
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
                     <Input
@@ -168,7 +178,7 @@ export default function Auth() {
                       required
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
                     <div className="relative">
@@ -195,13 +205,13 @@ export default function Auth() {
                       </Button>
                     </div>
                   </div>
-                  
+
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? 'Signing in...' : 'Sign In'}
                   </Button>
                 </form>
               </TabsContent>
-              
+
               <TabsContent value="signup">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {error && (
@@ -209,7 +219,7 @@ export default function Auth() {
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="fullName">Full Name</Label>
                     <Input
@@ -221,7 +231,7 @@ export default function Auth() {
                       required
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
                     <Input
@@ -233,7 +243,7 @@ export default function Auth() {
                       required
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
                     <div className="relative">
@@ -261,12 +271,12 @@ export default function Auth() {
                       </Button>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label>Security Verification</Label>
                     <div className="p-4 border rounded-lg bg-muted/50">
                       <p className="text-sm text-muted-foreground mb-2">
-                        CAPTCHA temporarily disabled for testing
+                        Please complete the security check
                       </p>
                       <Turnstile
                         siteKey="0x4AAAAAAABkMYinukE_t4Se"
@@ -276,11 +286,11 @@ export default function Auth() {
                       />
                     </div>
                   </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
-                    disabled={loading || !email || !password || !fullName.trim()}
+
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={loading || !email || !password || !fullName.trim() || !captchaToken}
                   >
                     {loading ? 'Creating Account...' : 'Create Account'}
                   </Button>
