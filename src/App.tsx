@@ -25,6 +25,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<HanuEdu />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/login" element={<Auth />} />
+            <Route path="/enroll" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 

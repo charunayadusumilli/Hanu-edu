@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,19 +10,33 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Turnstile } from '@marsidev/react-turnstile';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
-  const initialMode = searchParams.get('mode') === 'signup' ? 'signup' : 'login';
-  const [mode, setMode] = useState(initialMode);
+  const location = useLocation();
+
+  const getInitialMode = (): string => {
+    if (location.pathname === '/enroll') return 'signup';
+    if (location.pathname === '/login') return 'login';
+    return searchParams.get('mode') === 'signup' ? 'signup' : 'login';
+  };
+
+  const [mode, setMode] = useState(getInitialMode);
 
   // Update mode when URL changes
   useEffect(() => {
-    const urlMode = searchParams.get('mode');
-    if (urlMode === 'signup' || urlMode === 'login') {
-      setMode(urlMode);
+    if (location.pathname === '/enroll') {
+      setMode('signup');
+    } else if (location.pathname === '/login') {
+      setMode('login');
+    } else {
+      const urlMode = searchParams.get('mode');
+      if (urlMode === 'signup' || urlMode === 'login') {
+        setMode(urlMode);
+      }
     }
-  }, [searchParams]);
+  }, [location.pathname, searchParams]);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,6 +45,9 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [captchaToken, setCaptchaToken] = useState('');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -38,7 +55,7 @@ export default function Auth() {
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, [user, navigate]);
 
@@ -105,7 +122,7 @@ export default function Auth() {
             title: "Welcome back!",
             description: "You have successfully signed in.",
           });
-          navigate('/');
+          navigate('/dashboard');
         }
       }
     } catch (error: any) {
@@ -127,6 +144,37 @@ export default function Auth() {
   const switchMode = (mode: string) => {
     setMode(mode);
     resetForm();
+  };
+
+  const handleForgotPassword = async () => {
+    if (!resetEmail) {
+      setError('Please enter your email address.');
+      return;
+    }
+
+    setResetLoading(true);
+    setError('');
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      });
+
+      if (error) {
+        setError(error.message || 'Failed to send reset email. Please try again.');
+      } else {
+        toast({
+          title: "Password Reset Email Sent",
+          description: "Check your inbox for a link to reset your password.",
+        });
+        setShowForgotPassword(false);
+        setResetEmail('');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setResetLoading(false);
+    }
   };
 
   return (
@@ -153,6 +201,54 @@ export default function Auth() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {showForgotPassword ? (
+              <div className="space-y-4">
+                <div className="text-center mb-4">
+                  <h3 className="text-lg font-semibold">Reset Your Password</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Enter your email and we'll send you a reset link.
+                  </p>
+                </div>
+
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="resetEmail">Email</Label>
+                  <Input
+                    id="resetEmail"
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+
+                <Button
+                  className="w-full"
+                  onClick={handleForgotPassword}
+                  disabled={resetLoading}
+                >
+                  {resetLoading ? 'Sending...' : 'Send Reset Link'}
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  className="w-full"
+                  onClick={() => {
+                    setShowForgotPassword(false);
+                    setError('');
+                    setResetEmail('');
+                  }}
+                >
+                  Back to Sign In
+                </Button>
+              </div>
+            ) : (
             <Tabs value={mode} onValueChange={switchMode}>
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="login">Sign In</TabsTrigger>
@@ -204,6 +300,17 @@ export default function Auth() {
                         )}
                       </Button>
                     </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="px-0 text-sm text-primary hover:text-primary/80"
+                      onClick={() => { setShowForgotPassword(true); setError(''); }}
+                    >
+                      Forgot Password?
+                    </Button>
                   </div>
 
                   <Button type="submit" className="w-full" disabled={loading}>
@@ -297,6 +404,7 @@ export default function Auth() {
                 </form>
               </TabsContent>
             </Tabs>
+            )}
           </CardContent>
         </Card>
       </div>

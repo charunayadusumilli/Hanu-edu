@@ -19,7 +19,7 @@ interface NavigationProps {
 
 const navigationItems = [
   { id: 'courses', label: 'Explore Courses', href: '/academy/catalog' },
-  { id: 'community', label: 'Join Community', href: '/auth?mode=signup' },
+  { id: 'community', label: 'Join Community', href: '/enroll' },
 ];
 
 export function Navigation({ className }: NavigationProps) {
@@ -60,9 +60,7 @@ export function Navigation({ className }: NavigationProps) {
         <div className="flex items-center justify-between">
           {/* Logo matching Hanu UI */}
           <Link to="/" className="flex items-center">
-            <h1 className="text-2xl font-black text-slate-900 tracking-tighter">
-              HANU<span className="text-primary italic">.EDU</span>
-            </h1>
+            <img src="/logo.png" alt="Hanu Consulting" className="h-10 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -105,11 +103,11 @@ export function Navigation({ className }: NavigationProps) {
               </DropdownMenu>
             ) : (
               <>
-                <Link to="/auth" className="text-sm font-bold uppercase tracking-widest text-slate-900 hover:text-primary transition-colors">
+                <Link to="/login" className="text-sm font-bold uppercase tracking-widest text-slate-900 hover:text-primary transition-colors">
                   Log In
                 </Link>
                 <Button className="bg-primary hover:bg-primary-dark text-white font-bold h-12 px-8 rounded-full shadow-lg shadow-primary/20 transition-all" asChild>
-                  <Link to="/auth">Enroll Now</Link>
+                  <Link to="/enroll">Enroll Now</Link>
                 </Button>
               </>
             )}
@@ -187,10 +185,10 @@ export function Navigation({ className }: NavigationProps) {
                   ) : (
                     <div className="flex flex-col gap-3">
                       <Button variant="outline" className="w-full h-12 rounded-xl border-slate-200" asChild onClick={() => setIsMenuOpen(false)}>
-                        <Link to="/auth">Log In</Link>
+                        <Link to="/login">Log In</Link>
                       </Button>
                       <Button className="w-full h-12 rounded-xl bg-primary hover:bg-primary-dark shadow-lg shadow-primary/20" asChild onClick={() => setIsMenuOpen(false)}>
-                        <Link to="/auth">Enroll Now</Link>
+                        <Link to="/enroll">Enroll Now</Link>
                       </Button>
                     </div>
                   )}

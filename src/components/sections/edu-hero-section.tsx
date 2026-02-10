@@ -47,7 +47,7 @@ export const EduHeroSection = () => {
                                 </Link>
                             </Button>
                             <Button size="lg" variant="outline" className="h-16 px-10 rounded-xl border-slate-200 hover:bg-slate-50 text-slate-900 font-semibold" asChild>
-                                <Link to="/auth?mode=signup">
+                                <Link to="/enroll">
                                     <GraduationCap className="mr-2 w-5 h-5" />
                                     Join Academy
                                 </Link>

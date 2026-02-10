@@ -20,7 +20,7 @@ export default function AuthCallback() {
             description: error.message || "Something went wrong during authentication.",
             variant: "destructive"
           });
-          navigate('/auth');
+          navigate('/login');
           return;
         }
 
@@ -35,7 +35,7 @@ export default function AuthCallback() {
             title: "Email Verified",
             description: "Your email has been verified. Please sign in to continue.",
           });
-          navigate('/auth');
+          navigate('/login');
         }
       } catch (error) {
         console.error('Unexpected error:', error);
@@ -44,7 +44,7 @@ export default function AuthCallback() {
           description: "An unexpected error occurred. Please try again.",
           variant: "destructive"
         });
-        navigate('/auth');
+        navigate('/login');
       }
     };
 

@@ -185,7 +185,7 @@ export function ChallengeSubmissionForm() {
             Please sign in to submit a challenge.
           </p>
           <Button 
-            onClick={() => window.location.href = '/auth'}
+            onClick={() => window.location.href = '/login'}
             className="bg-gradient-primary"
           >
             Sign In

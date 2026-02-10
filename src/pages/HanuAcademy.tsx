@@ -96,7 +96,7 @@ const HanuAcademy = () => {
               </Button>
               {!user && (
                 <Button variant="outline" size="lg" asChild>
-                  <Link to="/auth">Sign Up for Free</Link>
+                  <Link to="/enroll">Sign Up for Free</Link>
                 </Button>
               )}
             </div>

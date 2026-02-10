@@ -11,9 +11,7 @@ export function FooterSection() {
           {/* Brand Column */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center">
-              <h2 className="text-2xl font-black text-white tracking-tighter">
-                HANU<span className="text-primary italic">.EDU</span>
-              </h2>
+              <img src="/logo.png" alt="Hanu Consulting" className="h-12 w-auto" />
             </Link>
             <p className="text-sm leading-relaxed max-w-sm">
               World-class AI education and technology training. Empowering the next generation of innovators with corporate-grade curriculums and expert-led mentorship.
@@ -42,7 +40,7 @@ export function FooterSection() {
                 </Link>
               </li>
               <li>
-                <Link to="/auth" className="hover:text-primary transition-colors">Join Community</Link>
+                <Link to="/enroll" className="hover:text-primary transition-colors">Join Community</Link>
               </li>
               <li>
                 <a href="#" className="hover:text-primary transition-colors">Success Stories</a>
@@ -80,11 +78,11 @@ export function FooterSection() {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start">
                 <Mail className="w-5 h-5 mr-3 text-primary mt-0.5" />
-                <span>hello@hanuedu.com</span>
+                <span>contact@hanu-consulting.com</span>
               </li>
               <li className="flex items-start">
                 <Phone className="w-5 h-5 mr-3 text-primary mt-0.5" />
-                <span>+1 (855) HANU-EDU</span>
+                <span>+1 855-522-5499</span>
               </li>
               <li className="flex items-start">
                 <MapPin className="w-5 h-5 mr-3 text-primary mt-0.5" />
