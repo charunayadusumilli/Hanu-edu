@@ -11,7 +11,7 @@ export function FooterSection() {
           {/* Brand Column */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center">
-              <img src="/logo.png" alt="Hanu Consulting" className="h-12 w-auto" />
+              <img src="/logo-white.svg" alt="Hanu Edu" className="h-14 w-auto" />
             </Link>
             <p className="text-sm leading-relaxed max-w-sm">
               World-class AI education and technology training. Empowering the next generation of innovators with corporate-grade curriculums and expert-led mentorship.

@@ -60,7 +60,7 @@ export function Navigation({ className }: NavigationProps) {
         <div className="flex items-center justify-between">
           {/* Logo matching Hanu UI */}
           <Link to="/" className="flex items-center">
-            <img src="/logo.png" alt="Hanu Consulting" className="h-10 w-auto" />
+            <img src="/logo.svg" alt="Hanu Edu" className="h-14 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
