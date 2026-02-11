@@ -60,7 +60,7 @@ export function Navigation({ className }: NavigationProps) {
         <div className="flex items-center justify-between">
           {/* Logo matching Hanu UI */}
           <Link to="/" className="flex items-center">
-            <img src="/logo.svg" alt="Hanu Edu" className="h-14 w-auto" />
+            <img src="/logo.svg" alt="Hanu Edu" className="h-11 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -106,7 +106,7 @@ export function Navigation({ className }: NavigationProps) {
                 <Link to="/login" className="text-sm font-bold uppercase tracking-widest text-slate-900 hover:text-primary transition-colors">
                   Log In
                 </Link>
-                <Button className="bg-primary hover:bg-primary-dark text-white font-bold h-12 px-8 rounded-full shadow-lg shadow-primary/20 transition-all" asChild>
+                <Button className="bg-primary hover:bg-primary-dark text-white font-bold h-10 px-6 rounded-full shadow-lg shadow-primary/20 transition-all text-sm" asChild>
                   <Link to="/enroll">Enroll Now</Link>
                 </Button>
               </>

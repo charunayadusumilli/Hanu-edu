@@ -47,24 +47,24 @@ const courses = [
 
 export const EduCoursesSection = () => {
     return (
-        <section id="courses" className="py-24 sm:py-32 px-6 bg-slate-50">
+        <section id="courses" className="py-16 sm:py-24 px-6 bg-slate-50">
             <div className="container mx-auto max-w-7xl">
 
                 {/* Section Header matching Hanu UI */}
-                <div className="text-center mb-16 sm:mb-20 space-y-4">
+                <div className="text-center mb-12 sm:mb-16 space-y-4">
                     <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-[0.1em] rounded-full">
                         What We Offer
                     </span>
-                    <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                         Comprehensive <span className="text-primary">AI Training</span>
                     </h2>
-                    <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-slate-600 text-base max-w-2xl mx-auto leading-relaxed">
                         Corporate-grade AI education curriculums designed to modernize your skills and unlock new career possibilities.
                     </p>
                 </div>
 
                 {/* Responsive Grid: 1 col (mobile), 2 col (tablet), 3 col (desktop) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {courses.map((course, index) => (
                         <motion.div
                             key={course.id}
@@ -89,7 +89,7 @@ export const EduCoursesSection = () => {
                                     </Badge>
                                 </div>
 
-                                <div className="p-8 flex flex-col flex-grow space-y-6">
+                                <div className="p-6 flex flex-col flex-grow space-y-4">
                                     <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-slate-400">
                                         <span className="flex items-center">
                                             <Clock className="w-3.5 h-3.5 mr-1.5 text-primary" /> {course.duration}
@@ -114,7 +114,7 @@ export const EduCoursesSection = () => {
                                                 <Star className="w-4 h-4 mr-1.5 fill-yellow-500" /> {course.rating}
                                             </span>
                                         </div>
-                                        <span className="text-2xl font-black text-slate-900">{course.price}</span>
+                                        <span className="text-xl font-black text-slate-900">{course.price}</span>
                                     </div>
 
                                 </div>
@@ -124,7 +124,7 @@ export const EduCoursesSection = () => {
                 </div>
 
                 {/* Footer Link */}
-                <div className="mt-16 text-center">
+                <div className="mt-12 text-center">
                     <Button variant="outline" className="h-12 px-8 rounded-full border-slate-200 text-slate-600 font-semibold hover:bg-slate-50" asChild>
                         <Link to="/academy/catalog">
                             Browse Full Catalog

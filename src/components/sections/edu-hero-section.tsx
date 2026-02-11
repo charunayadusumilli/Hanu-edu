@@ -6,47 +6,47 @@ import { Link } from 'react-router-dom';
 
 export const EduHeroSection = () => {
     return (
-        <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-white pt-24 sm:pt-32 pb-12 sm:pb-24">
+        <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-white pt-20 sm:pt-28 pb-10 sm:pb-20">
             {/* Background Mask/Glow as seen in Hanu UI */}
             <div className="absolute top-0 right-[-10%] w-[60%] h-full opacity-[0.15] pointer-events-none bg-radial-primary animate-float" />
 
             <div className="container mx-auto px-6 lg:px-12 relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
 
                     {/* Left Column: Content */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="flex flex-col space-y-8 text-left"
+                        className="flex flex-col space-y-6 text-left"
                     >
                         {/* Badge */}
                         <div>
-                            <span className="inline-block px-4 py-2 bg-primary/10 text-primary text-sm font-bold uppercase tracking-wider rounded-full">
+                            <span className="inline-block px-3 py-1.5 bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider rounded-full">
                                 Future-Proof Your Career
                             </span>
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-[clamp(2.5rem,8vw,4rem)] font-extrabold text-slate-900 leading-[1.05] tracking-tight">
+                        <h1 className="text-[clamp(2rem,5vw,3rem)] font-extrabold text-slate-900 leading-[1.1] tracking-tight">
                             Unlock the Power of <br />
                             <span className="text-primary">AI Excellence</span>
                         </h1>
 
                         {/* Description */}
-                        <p className="text-lg sm:text-xl text-slate-600 max-w-xl leading-relaxed font-medium">
+                        <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed font-medium">
                             Hanu Edu delivers world-class AI and technology training designed for the next generation of innovators. Corporate-grade learning, personalized for you.
                         </p>
 
                         {/* CTAs */}
                         <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                            <Button size="lg" className="bg-primary hover:bg-primary-dark text-white font-bold h-16 px-10 rounded-xl shadow-lg hover:shadow-xl transition-all group" asChild>
+                            <Button size="lg" className="bg-primary hover:bg-primary-dark text-white font-bold h-12 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all group" asChild>
                                 <Link to="/academy/catalog">
                                     Explore Courses
                                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
                                 </Link>
                             </Button>
-                            <Button size="lg" variant="outline" className="h-16 px-10 rounded-xl border-slate-200 hover:bg-slate-50 text-slate-900 font-semibold" asChild>
+                            <Button size="lg" variant="outline" className="h-12 px-8 rounded-xl border-slate-200 hover:bg-slate-50 text-slate-900 font-semibold" asChild>
                                 <Link to="/enroll">
                                     <GraduationCap className="mr-2 w-5 h-5" />
                                     Join Academy
@@ -55,7 +55,7 @@ export const EduHeroSection = () => {
                         </div>
 
                         {/* Social Proof area matching Hanu UI */}
-                        <div className="pt-12 border-t border-slate-100">
+                        <div className="pt-8 border-t border-slate-100">
                             <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">
                                 Trusted by industry leaders
                             </p>

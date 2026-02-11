@@ -23,18 +23,18 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
+            {/* Public routes */}
             <Route path="/" element={<HanuEdu />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/login" element={<Auth />} />
             <Route path="/enroll" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-
-            {/* Academy subpages */}
-            <Route path="/academy/catalog" element={<AcademyCatalog />} />
             <Route path="/hanu-edu" element={<HanuEdu />} />
 
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            {/* Protected routes - require login */}
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/academy/catalog" element={<ProtectedRoute><AcademyCatalog /></ProtectedRoute>} />
+
             <Route path="*" element={<HanuEdu />} />
           </Routes>
         </AuthProvider>

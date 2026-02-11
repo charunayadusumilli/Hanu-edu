@@ -40,6 +40,7 @@ export default function Auth() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,7 +56,7 @@ export default function Auth() {
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      navigate('/');
     }
   }, [user, navigate]);
 
@@ -71,6 +72,11 @@ export default function Auth() {
 
     if (password.length < 6) {
       setError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    if (mode === 'signup' && password !== confirmPassword) {
+      setError('Passwords do not match.');
       return;
     }
 
@@ -122,7 +128,7 @@ export default function Auth() {
             title: "Welcome back!",
             description: "You have successfully signed in.",
           });
-          navigate('/dashboard');
+          navigate('/');
         }
       }
     } catch (error: any) {
@@ -136,6 +142,7 @@ export default function Auth() {
   const resetForm = () => {
     setEmail('');
     setPassword('');
+    setConfirmPassword('');
     setFullName('');
     setError('');
     setCaptchaToken('');
@@ -380,6 +387,19 @@ export default function Auth() {
                   </div>
 
                   <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Input
+                      id="confirmPassword"
+                      type={showPassword ? 'text' : 'password'}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirm your password"
+                      required
+                      minLength={6}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
                     <Label>Security Verification</Label>
                     <div className="p-4 border rounded-lg bg-muted/50">
                       <p className="text-sm text-muted-foreground mb-2">
@@ -397,7 +417,7 @@ export default function Auth() {
                   <Button
                     type="submit"
                     className="w-full"
-                    disabled={loading || !email || !password || !fullName.trim() || !captchaToken}
+                    disabled={loading || !email || !password || !confirmPassword || !fullName.trim()}
                   >
                     {loading ? 'Creating Account...' : 'Create Account'}
                   </Button>

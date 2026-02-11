@@ -76,15 +76,15 @@ const HanuAcademy = () => {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-accent/5">
-        <div className="container mx-auto px-6 py-20">
+        <div className="container mx-auto px-6 py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center max-w-4xl mx-auto"
           >
             <GraduationCap className="w-16 h-16 text-primary mx-auto mb-6" />
-            <h1 className="text-5xl font-bold text-gradient-primary mb-6">HANU AI Academy</h1>
-            <p className="text-xl text-muted-foreground mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-gradient-primary mb-4">HANU AI Education</h1>
+            <p className="text-base sm:text-lg text-muted-foreground mb-6">
               Advance your career with cutting-edge AI and technology training programs
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -105,20 +105,20 @@ const HanuAcademy = () => {
       </div>
 
       {/* Features Section */}
-      <div className="container mx-auto px-6 py-16">
+      <div className="container mx-auto px-6 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
-          <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose HANU Academy?</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-3">Why Choose HANU Edu?</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Our comprehensive learning platform combines theory with practical application to deliver real results
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {academyFeatures.map((feature, index) => (
             <motion.div
               key={feature.title}
@@ -146,13 +146,13 @@ const HanuAcademy = () => {
           transition={{ delay: 0.7 }}
         >
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-foreground">Featured Courses</h2>
+            <h2 className="text-2xl font-bold text-foreground">Featured Courses</h2>
             <Button variant="outline" asChild>
               <Link to="/academy/courses">View All Courses</Link>
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredCourses.map((course, index) => (
               <motion.div
                 key={course.id}
@@ -182,7 +182,7 @@ const HanuAcademy = () => {
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold text-primary">{course.price}</span>
+                      <span className="text-xl font-bold text-primary">{course.price}</span>
                       <Button size="sm" className="bg-gradient-primary">
                         Enroll Now
                       </Button>
@@ -199,25 +199,25 @@ const HanuAcademy = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1 }}
-          className="mt-16"
+          className="mt-12"
         >
-          <Card className="p-8 glass text-center">
-            <h2 className="text-2xl font-bold text-foreground mb-8">Academy Statistics</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <Card className="p-6 glass text-center">
+            <h2 className="text-xl font-bold text-foreground mb-6">Academy Statistics</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div>
-                <div className="text-3xl font-bold text-primary mb-2">5,000+</div>
+                <div className="text-2xl font-bold text-primary mb-2">5,000+</div>
                 <div className="text-sm text-muted-foreground">Students Enrolled</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-primary mb-2">150+</div>
+                <div className="text-2xl font-bold text-primary mb-2">150+</div>
                 <div className="text-sm text-muted-foreground">Courses Available</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-primary mb-2">95%</div>
+                <div className="text-2xl font-bold text-primary mb-2">95%</div>
                 <div className="text-sm text-muted-foreground">Completion Rate</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-primary mb-2">4.8★</div>
+                <div className="text-2xl font-bold text-primary mb-2">4.8★</div>
                 <div className="text-sm text-muted-foreground">Average Rating</div>
               </div>
             </div>

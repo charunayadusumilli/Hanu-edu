@@ -104,11 +104,11 @@ const AcademyCatalog = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-4xl font-bold text-primary">Course Catalog</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-primary">Course Catalog</h1>
                 <p className="text-muted-foreground">Discover and enroll in professional development courses</p>
               </div>
               <Button variant="outline" asChild>
-                <Link to="/hanu-academy">Back to Academy</Link>
+                <Link to="/">Back to Home</Link>
               </Button>
             </div>
 
@@ -157,7 +157,7 @@ const AcademyCatalog = () => {
 
       {/* Course Grid */}
       <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCourses.map((course, index) => (
             <motion.div
               key={course.id}

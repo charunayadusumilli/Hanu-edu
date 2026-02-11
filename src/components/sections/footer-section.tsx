@@ -11,7 +11,7 @@ export function FooterSection() {
           {/* Brand Column */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center">
-              <img src="/logo-white.svg" alt="Hanu Edu" className="h-14 w-auto" />
+              <img src="/logo-white.svg" alt="Hanu Edu" className="h-11 w-auto" />
             </Link>
             <p className="text-sm leading-relaxed max-w-sm">
               World-class AI education and technology training. Empowering the next generation of innovators with corporate-grade curriculums and expert-led mentorship.
@@ -96,7 +96,7 @@ export function FooterSection() {
         {/* Global Bottom Bar */}
         <div className="mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-xs">
-            © {new Date().getFullYear()} Hanu Academy. All rights reserved.
+            © {new Date().getFullYear()} Hanu Edu. All rights reserved.
           </p>
           <div className="flex gap-8 text-xs font-semibold">
             <Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link>
